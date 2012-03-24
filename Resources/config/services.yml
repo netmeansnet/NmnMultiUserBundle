@@ -1,0 +1,32 @@
+services:
+    
+    # custom fosuser registration form handler
+    nmn_user.form.handler.registration:
+        class: Nmn\UserBundle\Form\Handler\RegistrationFormHandler
+        arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer", "@nmn_user.manager.user_discriminator"]
+        scope: request
+        public: false
+    
+    # custom fosuser profile form handler
+    nmn_user.form.handler.profile:
+        class: Nmn\UserBundle\Form\Handler\ProfileFormHandler
+        arguments: ["@fos_user.profile.form", "@request", "@fos_user.user_manager", "@nmn_user.manager.user_discriminator"]
+        scope: request
+        public: false
+    
+    # class to discriminate users types
+    nmn_user.manager.user_discriminator:
+        class:     Nmn\UserBundle\Manager\UserDiscriminator
+        arguments: ["@service_container", %nmn_user_discriminator_parameters%]
+        
+    # custom fosuser user manager    
+    nmn_user.manager.user_manager:
+        class:     Nmn\UserBundle\Manager\UserManager
+        arguments: ["@security.encoder_factory", "@fos_user.util.username_canonicalizer", "@fos_user.util.email_canonicalizer", "@fos_user.entity_manager", %fos_user.model.user.class%, "@nmn_user.manager.user_discriminator"]
+        
+    # alias
+    nmn_user_discriminator:
+        alias: nmn_user.manager.user_discriminator
+    nmn_user_manager:
+        alias: nmn_user.manager.user_manager
+    
