@@ -176,7 +176,7 @@ class UserTwo extends User
 ```
 
 You must also create forms for your entities: 
-see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/overriding_forms.md)
+see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/1.1.0/Resources/doc/overriding_forms.md)
 
 ### 6. Configure the FOSUserBundle (NmnUserBundle params)
 
