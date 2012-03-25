@@ -3,7 +3,9 @@ NmnUserBundle Documentation
 
 NmnUserBundle came by the need to use different types of users using only one fos_user service. 
 In practice it is an hack that force FOSUser bundle through custom UserManager, controllers and forms handlers.
+
 It 's just a lazy way to use free, most of the functionality of FOSUserBundle.
+
 This bundle has been realized as a part of a real application that uses doctrine orm, 
 so for now it only supports the ORM db driver.
 
