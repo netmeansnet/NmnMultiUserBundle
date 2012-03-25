@@ -94,6 +94,7 @@ class AcmeUserBundle extends Bundle
 Create entities using Doctrine2 inheritance.
 
 Abstract User that directly extends from FOS\UserBundle\Entity\User
+
 ``` php
 <?php
 
@@ -122,6 +123,7 @@ abstract class User extends BaseUser
 ```
 
 UserOne
+
 ``` php
 <?php
 
@@ -146,6 +148,7 @@ class UserOne extends User
 ```
 
 UserTwo
+
 ``` php
 <?php
 
