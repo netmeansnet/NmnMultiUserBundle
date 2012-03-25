@@ -251,8 +251,6 @@ class RegistrationUserTwoController extends BaseController
     {
         $discriminator = $this->container->get('nmn_user_discriminator');         
         $discriminator->setClass('Acme\UserBundle\Entity\UserTwo'); 
-        $form = $discriminator->getRegistrationForm();
-        $this->container->set('fos_user.registration.form', $form);
         
         return parent::registerAction();
     }
@@ -273,7 +271,8 @@ class RegistrationUserTwoController extends BaseController
 {
     public function registerAction()
     {
-        // ...
+        $discriminator = $this->container->get('nmn_user_discriminator');         
+        $discriminator->setClass('Acme\UserBundle\Entity\UserTwo'); 
         
         $return = parent::registerAction();
         
