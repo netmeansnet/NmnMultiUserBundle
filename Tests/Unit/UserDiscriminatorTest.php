@@ -28,6 +28,8 @@ class UserDiscriminatorTest extends TestCase
         $this->parameters = array('classes' => array('user' => $userParameters, 'anotherUser' => $anotherUserParameters));
         
         $this->discriminator = new UserDiscriminator($this->container, $this->parameters);
+        
+        $this->session = $this->getMock('Symfony\Component\HttpFoundation\Session', array('set', 'get'));
     }
 
     /**
@@ -96,24 +98,16 @@ class UserDiscriminatorTest extends TestCase
      * 
      */
     public function testSetClassPersist() 
-    {
-        $sessionStorage = $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface');
-        $session        = $this->getMock('Symfony\Component\HttpFoundation\Session', array('set'), array($sessionStorage));  
-        
-        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($session));
-        $session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'Nmn\UserBundle\Tests\Unit\Stub\User');
-        
+    {        
+        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
+        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'Nmn\UserBundle\Tests\Unit\Stub\User');        
         $this->discriminator->setClass('Nmn\UserBundle\Tests\Unit\Stub\User', true);
     }
     
     public function testGetClass() 
     {
-        $sessionStorage = $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface');
-        $session        = $this->getMock('Symfony\Component\HttpFoundation\Session', array('get'), array($sessionStorage));  
-        
-        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($session));
-        $session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));
-        
+        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
+        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));        
         $this->discriminator->setClass('Nmn\UserBundle\Tests\Unit\Stub\AnotherUser');
         
         $this->assertEquals('Nmn\UserBundle\Tests\Unit\Stub\AnotherUser', $this->discriminator->getClass());
@@ -121,33 +115,24 @@ class UserDiscriminatorTest extends TestCase
     
     public function testGetClassDefault() 
     {
-        $sessionStorage = $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface');
-        $session        = $this->getMock('Symfony\Component\HttpFoundation\Session', array('get'), array($sessionStorage));  
-        
-        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($session));
-        $session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));
+        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
+        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));
         
         $this->assertEquals('Nmn\UserBundle\Tests\Unit\Stub\User', $this->discriminator->getClass());
     }
     
     public function testGetClassStored() 
     {
-        $sessionStorage = $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface');
-        $session        = $this->getMock('Symfony\Component\HttpFoundation\Session', array('get'), array($sessionStorage));  
-        
-        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($session));
-        $session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('Nmn\UserBundle\Tests\Unit\Stub\AnotherUser'));
+        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
+        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('Nmn\UserBundle\Tests\Unit\Stub\AnotherUser'));
         
         $this->assertEquals('Nmn\UserBundle\Tests\Unit\Stub\AnotherUser', $this->discriminator->getClass());
     }
     
     public function testCreateUser()
     {
-        $sessionStorage = $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface');
-        $session        = $this->getMock('Symfony\Component\HttpFoundation\Session', array('get'), array($sessionStorage));  
-        
-        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($session));
-        $session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));
+        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
+        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));
                 
         $this->discriminator->setClass('Nmn\UserBundle\Tests\Unit\Stub\User');
         $this->discriminator->createUser();
@@ -157,14 +142,12 @@ class UserDiscriminatorTest extends TestCase
     {
         $type = new Stub\UserRegistrationForm;
         $formFactory    = $this->getMock('FormFactory', array('createNamed'));
-        $sessionStorage = $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface');
-        $session        = $this->getMock('Symfony\Component\HttpFoundation\Session', array('get'), array($sessionStorage)); 
         
-        $session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));        
+        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));        
         $this->container->expects($this->exactly(2))->method('get')->with($this->logicalOr(
                 'session',
                 'form.factory'))
-                ->will($this->onConsecutiveCalls($formFactory, $session));        
+                ->will($this->onConsecutiveCalls($formFactory, $this->session));        
         $formFactory->expects($this->exactly(1))->method('createNamed')->with($type, 'form_name', null, array('validation_groups' => array(0 => 'Registration', 1 => 'Default')))->will($this->onConsecutiveCalls(null));
         
         $this->discriminator->getRegistrationForm();
@@ -174,15 +157,13 @@ class UserDiscriminatorTest extends TestCase
     {
         $type = new Stub\AnotherUserProfileForm;
         $formFactory    = $this->getMock('FormFactory', array('createNamed'));
-        $sessionStorage = $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface');
-        $session        = $this->getMock('Symfony\Component\HttpFoundation\Session', array('get'), array($sessionStorage)); 
         
-        $session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('Nmn\UserBundle\Tests\Unit\Stub\AnotherUser'));
+        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('Nmn\UserBundle\Tests\Unit\Stub\AnotherUser'));
              
         $this->container->expects($this->exactly(2))->method('get')->with($this->logicalOr(
                 'session',
                 'form.factory'))
-                ->will($this->onConsecutiveCalls($formFactory, $session));        
+                ->will($this->onConsecutiveCalls($formFactory, $this->session));        
         $formFactory->expects($this->exactly(1))->method('createNamed')->with($type, 'form_name', null, array('validation_groups' => array(0 => 'Profile', 1 => 'Default')))->will($this->onConsecutiveCalls(null));
         
         $this->discriminator->getProfileForm();
