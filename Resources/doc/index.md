@@ -253,7 +253,7 @@ class RegistrationUserTwoController extends BaseController
         $form = $discriminator->getRegistrationForm();
         $this->container->set('fos_user.registration.form', $form);
         
-        $return = parent::registerAction();
+        return parent::registerAction();
     }
 }
 ```
