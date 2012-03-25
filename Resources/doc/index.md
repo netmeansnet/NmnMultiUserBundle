@@ -257,6 +257,8 @@ class RegistrationUserTwoController extends BaseController
 }
 ```
 
+**Custom view**
+
 If you want render your custom view
 
 ```php
@@ -287,6 +289,8 @@ class RegistrationUserTwoController extends BaseController
     }
 }
 ```
+
+**Customize all registrations**
 
 You can also define a custom route for UserOne but in this case remember to override the 
 RegistrationController in addition to create the route and the controller for UserOne
