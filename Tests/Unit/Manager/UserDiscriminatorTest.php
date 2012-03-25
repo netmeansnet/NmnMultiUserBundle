@@ -1,8 +1,11 @@
 <?php
 
-namespace Nmn\UserBundle\Tests\Unit;
+namespace Nmn\UserBundle\Tests\Unit\Manager;
 
+use Nmn\UserBundle\Tests\Unit\TestCase;
 use Nmn\UserBundle\Manager\UserDiscriminator;
+use Nmn\UserBundle\Tests\Unit\Stub\UserRegistrationForm;
+use Nmn\UserBundle\Tests\Unit\Stub\AnotherUserProfileForm;
 
 class UserDiscriminatorTest extends TestCase
 {
@@ -140,7 +143,7 @@ class UserDiscriminatorTest extends TestCase
     
     public function testGetRegistrationForm()
     {
-        $type = new Stub\UserRegistrationForm;
+        $type = new UserRegistrationForm;
         $formFactory    = $this->getMock('FormFactory', array('createNamed'));
         
         $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));        
@@ -155,7 +158,7 @@ class UserDiscriminatorTest extends TestCase
     
     public function testGetProfileForm()
     {
-        $type = new Stub\AnotherUserProfileForm;
+        $type = new AnotherUserProfileForm;
         $formFactory    = $this->getMock('FormFactory', array('createNamed'));
         
         $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('Nmn\UserBundle\Tests\Unit\Stub\AnotherUser'));

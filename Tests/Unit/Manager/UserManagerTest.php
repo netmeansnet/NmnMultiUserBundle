@@ -1,7 +1,8 @@
 <?php
 
-namespace Nmn\UserBundle\Tests\Unit;
+namespace Nmn\UserBundle\Tests\Unit\Manager;
 
+use Nmn\UserBundle\Tests\Unit\TestCase;
 use Nmn\UserBundle\Manager\OrmUserManager as UserManager;
 
 class UserManagerTest extends TestCase
