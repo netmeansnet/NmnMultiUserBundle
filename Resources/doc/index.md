@@ -22,6 +22,7 @@ so for now it only supports the ORM db driver.
 5. Create your Entities
 6. Configure the FOSUserBundle (NmnUserBundle params)
 7. Configure parameters for UserDiscriminator
+8. Create your controllers
 
 ### 1: Download NmnUserBundle
 
@@ -199,7 +200,7 @@ fos_user:
             handler: nmn_user_profile_form_handler
 ```
     
-### 6: Configure parameters for UserDiscriminator
+### 7: Configure parameters for UserDiscriminator
     
 ``` yaml
 # Acme/UserBundle/Resources/config/config.yml
@@ -218,3 +219,94 @@ parameters:
             profile: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
             factory: 
 ```
+
+### 8: Create your controllers
+
+Nmn\UserBundle\Controller\RegistrationController can handle registration flow just for 
+the first user passed to discriminator in this case user_one. 
+To handle flow of user_two you must configure a route and add a controller in your bundle.
+
+Route configuration
+
+``` yaml
+# Acme/UserBundle/Resources/config/routing.yml
+user_two_registration:
+    pattern:  /register/user-two
+    defaults: { _controller: AcmeUserBundle:RegistrationUserTwo:register }
+```
+
+Controller 
+
+``` php
+<?php
+
+namespace Acme\UserBundle\Controller;
+
+use Nmn\UserBundle\Controller\RegistrationController as BaseController;
+
+class RegistrationUserTwoController extends BaseController
+{
+    public function registerAction()
+    {
+        $discriminator = $this->container->get('nmn_user_discriminator');         
+        $discriminator->setClass('Acme\UserBundle\Entity\UserTwo'); 
+        $form = $discriminator->getRegistrationForm();
+        $this->container->set('fos_user.registration.form', $form);
+        
+        $return = parent::registerAction();
+    }
+}
+```
+
+If you want render your custom view
+
+```php
+<?php
+
+namespace Acme\UserBundle\Controller;
+
+use Nmn\UserBundle\Controller\RegistrationController as BaseController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+class RegistrationUserTwoController extends BaseController
+{
+    public function registerAction()
+    {
+        ...
+        
+        $return = parent::registerAction();
+        
+        if ($return instanceof RedirectResponse) {
+            return $return;
+        }
+        
+        return $this->container->get('templating')->renderResponse('AcmeUserBundle:Registration:user_two.form.html.'.$this->getEngine(), array(
+            'form' => $form->createView(),
+            'theme' => $this->container->getParameter('fos_user.template.theme'),
+        ));   
+    }
+}
+```
+
+You can also define a custom route for UserOne but in this case remember to override the 
+RegistrationController in addition to create the route and the controller for UserOne
+
+```php
+<?php
+
+namespace Acme\UserBundle\Controller;
+
+use Nmn\UserBundle\Controller\RegistrationController as BaseController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+class RegistrationController extends BaseController
+{
+    public function registerAction()
+    {
+        $url = $this->container->get('router')->generate('home');        
+        return new RedirectResponse($url);
+    }
+}
+```
+
+
