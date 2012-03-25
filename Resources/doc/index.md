@@ -222,7 +222,7 @@ parameters:
 
 ### 8: Create your controllers
 
-Nmn\UserBundle\Controller\RegistrationController can handle registration flow just for 
+Nmn\UserBundle\Controller\RegistrationController can handles registration flow just for 
 the first user passed to discriminator in this case user_one. 
 To handle flow of user_two you must configure a route and add a controller in your bundle.
 
