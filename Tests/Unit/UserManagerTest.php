@@ -2,7 +2,7 @@
 
 namespace Nmn\UserBundle\Tests\Unit;
 
-use Nmn\UserBundle\Manager\UserManager;
+use Nmn\UserBundle\Manager\OrmUserManager as UserManager;
 
 class UserManagerTest extends TestCase
 {

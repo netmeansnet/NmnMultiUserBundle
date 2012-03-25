@@ -20,6 +20,10 @@ services:
         arguments: ["@service_container", %nmn_user_discriminator_parameters%]
         
     # alias
+    nmn_user_registration_form_handler:
+        alias: nmn_user.form.handler.registration
+    nmn_user_profile_form_handler:
+        alias: nmn_user.form.handler.profile
     nmn_user_discriminator:
         alias: nmn_user.manager.user_discriminator
     

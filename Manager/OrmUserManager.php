@@ -16,7 +16,7 @@ use Nmn\UserBundle\Manager\UserDiscriminator;
  * @author leonardo proietti (leonardo@netmeans.net)
  * @author eux (eugenio@netmeans.net)
  */
-class UserManager extends BaseUserManager
+class OrmUserManager extends BaseUserManager
 {
     protected $em;
     protected $class;    
