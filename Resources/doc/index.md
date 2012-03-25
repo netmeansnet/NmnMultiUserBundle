@@ -272,7 +272,7 @@ class RegistrationUserTwoController extends BaseController
 {
     public function registerAction()
     {
-        ...
+        // ...
         
         $return = parent::registerAction();
         
