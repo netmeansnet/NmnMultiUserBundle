@@ -28,8 +28,8 @@ class UserDiscriminatorTest extends TestCase
         $this->parameters = array('classes' => array('user' => $userParameters, 'anotherUser' => $anotherUserParameters));
         
         $this->discriminator = new UserDiscriminator($this->container, $this->parameters);
-        
-        $this->session = $this->getMock('Symfony\Component\HttpFoundation\Session', array('set', 'get'));
+                
+        $this->session = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session')->disableOriginalConstructor()->getMock();
     }
 
     /**
