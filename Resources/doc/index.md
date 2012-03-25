@@ -24,7 +24,7 @@ so for now it only supports the ORM db driver.
 7. Configure parameters for UserDiscriminator
 8. Create your controllers
 
-### 1: Download NmnUserBundle
+### 1. Download NmnUserBundle
 
 **Using the vendors script**
 
@@ -42,7 +42,7 @@ Now, run the vendors script to download the bundle:
 $ php bin/vendors install
 ```
 
-### 2: Configure the Autoloader
+### 2. Configure the Autoloader
 
 Add the `Nmn` namespace to your autoloader:
 
@@ -56,7 +56,7 @@ $loader->registerNamespaces(array(
 ));
 ```
 
-### 3: Enable the bundle
+### 3. Enable the bundle
 
 Enable the bundle in the kernel:
 
@@ -73,7 +73,7 @@ public function registerBundles()
 }
 ```
 
-### 4: Create your UserBundle
+### 4. Create your UserBundle
 
 Create a bundle that extends FOSUserBundle
 
@@ -92,7 +92,7 @@ class AcmeUserBundle extends Bundle
 }
 ```
 
-### 5: Create your Entities
+### 5. Create your Entities
 
 Create entities using Doctrine2 inheritance.
 
@@ -178,7 +178,7 @@ class UserTwo extends User
 You must also create forms for your entities: 
 see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/overriding_forms.md)
 
-### 6: Configure the FOSUserBundle (NmnUserBundle params)
+### 6. Configure the FOSUserBundle (NmnUserBundle params)
 
 Keep in mind that NmnUserBundle overwrites user_class via UserDiscriminator
 but does it only in controllers and forms handlers; in other case (command, sonata integration, etc)
@@ -200,7 +200,7 @@ fos_user:
             handler: nmn_user_profile_form_handler
 ```
     
-### 7: Configure parameters for UserDiscriminator
+### 7. Configure parameters for UserDiscriminator
     
 ``` yaml
 # Acme/UserBundle/Resources/config/config.yml
@@ -220,7 +220,7 @@ parameters:
             factory: 
 ```
 
-### 8: Create your controllers
+### 8. Create your controllers
 
 Nmn\UserBundle\Controller\RegistrationController can handles registration flow just for 
 the first user passed to discriminator in this case user_one. 
