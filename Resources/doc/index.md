@@ -75,7 +75,7 @@ public function registerBundles()
 
 ### 4. Create your UserBundle
 
-Create a bundle that extends FOSUserBundle
+Create a bundle that extends NmnUserBundle
 ([How to use Bundle Inheritance to Override parts of a Bundle] (http://symfony.com/doc/current/cookbook/bundles/inheritance.html))
 
 ``` php
