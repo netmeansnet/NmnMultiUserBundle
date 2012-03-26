@@ -2,9 +2,9 @@ NmnUserBundle Documentation
 ==================================
 
 NmnUserBundle came by the need to use different types of users using only one fos_user service. 
-In practice it is an hack that force FOSUser bundle through custom UserManager, controllers and forms handlers.
+In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
 
-It 's just a lazy way to use free, most of the functionality of FOSUserBundle.
+It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 
 This bundle has been realized as a part of a real application that uses doctrine orm, 
 so for now it only supports the ORM db driver.
@@ -182,8 +182,8 @@ see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfon
 ### 6. Configure the FOSUserBundle (NmnUserBundle params)
 
 Keep in mind that NmnUserBundle overwrites user_class via UserDiscriminator
-but does it only in controllers and forms handlers; in other case (command, sonata integration, etc)
-it is still used the user_class configured in the config.
+but it does it only in controllers and forms handlers; in the other cases (command, sonata integration, etc)
+it still uses the user_class configured in the config.
 
 ``` yaml
 # Acme/UserBundle/Resources/config/config.yml
@@ -223,8 +223,8 @@ parameters:
 
 ### 8. Create your controllers
 
-Nmn\UserBundle\Controller\RegistrationController can handles registration flow just for 
-the first user passed to discriminator in this case user_one. 
+Nmn\UserBundle\Controller\RegistrationController can handle registration flow only for 
+the first user passed to discriminator, in this case user_one. 
 To handle flow of user_two you must configure a route and add a controller in your bundle.
 
 Route configuration
@@ -259,7 +259,7 @@ class RegistrationUserTwoController extends BaseController
 
 **Custom view**
 
-If you want render your custom view
+If you want to render your custom view
 
 ```php
 <?php
@@ -294,7 +294,7 @@ class RegistrationUserTwoController extends BaseController
 **Customize all registrations**
 
 You can also define a custom route for UserOne but in this case remember to override the 
-RegistrationController in addition to create the route and the controller for UserOne
+RegistrationController and create the route and the controller for UserOne
 
 ```php
 <?php
