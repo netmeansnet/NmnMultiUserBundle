@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\UserBundle\Tests\Unit\Stub;
+namespace Nmn\MultiUserBundle\Tests\Unit\Stub;
 
 class UserProfileForm
 {

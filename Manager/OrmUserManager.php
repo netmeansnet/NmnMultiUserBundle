@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\UserBundle\Manager;
+namespace Nmn\MultiUserBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use FOS\UserBundle\Model\UserInterface;
@@ -8,7 +8,7 @@ use FOS\UserBundle\Entity\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
-use Nmn\UserBundle\Manager\UserDiscriminator;
+use Nmn\MultiUserBundle\Manager\UserDiscriminator;
 
 /**
  * Custom user manager for FOSUserBundle

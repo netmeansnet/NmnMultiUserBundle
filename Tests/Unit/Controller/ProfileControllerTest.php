@@ -1,16 +1,16 @@
 <?php
 
-namespace Nmn\UserBundle\Tests\Unit\Controller;
+namespace Nmn\MultiUserBundle\Tests\Unit\Controller;
 
-use Nmn\UserBundle\Tests\Unit\TestCase;
-use Nmn\UserBundle\Controller\ProfileController;
+use Nmn\MultiUserBundle\Tests\Unit\TestCase;
+use Nmn\MultiUserBundle\Controller\ProfileController;
 
 class ProfileControllerTest extends TestCase
 {
     public function setUp()
     {
         $this->container            = $this->getMockBuilder('Symfony\Component\DependencyInjection\Container')->disableOriginalConstructor()->getMock();
-        $this->userDiscriminator    = $this->getMockBuilder('Nmn\UserBundle\Manager\UserDiscriminator')->disableOriginalConstructor()->getMock();
+        $this->userDiscriminator    = $this->getMockBuilder('Nmn\MultiUserBundle\Manager\UserDiscriminator')->disableOriginalConstructor()->getMock();
         $this->securityContext      = $this->getMock('SecurityContext', array('getToken'));
         $this->token                = $this->getMock('Token', array('getUser'));
     }

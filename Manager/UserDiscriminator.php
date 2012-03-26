@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\UserBundle\Manager;
+namespace Nmn\MultiUserBundle\Manager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -177,7 +177,7 @@ class UserDiscriminator
             array_walk($parameter, function($val, $key) use(&$parameter){
                 
                 if ($key == 'factory' && empty($val)) {
-                        $parameter[$key] = 'Nmn\UserBundle\Manager\UserFactory';
+                        $parameter[$key] = 'Nmn\MultiUserBundle\Manager\UserFactory';
                 }
                     
                 if (!empty($val)) {

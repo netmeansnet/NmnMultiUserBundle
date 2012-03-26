@@ -1,17 +1,17 @@
 <?php
 
-namespace Nmn\UserBundle\Tests\Unit\Controller;
+namespace Nmn\MultiUserBundle\Tests\Unit\Controller;
 
-use Nmn\UserBundle\Tests\Unit\TestCase;
-use Nmn\UserBundle\Controller\RegistrationController;
+use Nmn\MultiUserBundle\Tests\Unit\TestCase;
+use Nmn\MultiUserBundle\Controller\RegistrationController;
 
 class RegistrationControllerTest extends TestCase
 {
     public function setUp()
     {
         $this->container            = $this->getMockBuilder('Symfony\Component\DependencyInjection\Container')->disableOriginalConstructor()->getMock();
-        $this->userDiscriminator    = $this->getMockBuilder('Nmn\UserBundle\Manager\UserDiscriminator')->disableOriginalConstructor()->getMock();
-        $this->formHandler          = $this->getMockBuilder('Nmn\UserBundle\Form\Handler\RegistrationFormHandler')->disableOriginalConstructor()->getMock();
+        $this->userDiscriminator    = $this->getMockBuilder('Nmn\MultiUserBundle\Manager\UserDiscriminator')->disableOriginalConstructor()->getMock();
+        $this->formHandler          = $this->getMockBuilder('Nmn\MultiUserBundle\Form\Handler\RegistrationFormHandler')->disableOriginalConstructor()->getMock();
         $this->templating           = $this->getMock('TemplateEngine', array('renderResponse'));
         $this->form                 = $this->getMock('Form', array('createView'));
         $this->responseExpected     = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')->disableOriginalConstructor()->getMock();

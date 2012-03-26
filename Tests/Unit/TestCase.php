@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\UserBundle\Tests\Unit;
+namespace Nmn\MultiUserBundle\Tests\Unit;
 
 /**
  *

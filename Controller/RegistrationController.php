@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\UserBundle\Controller;
+namespace Nmn\MultiUserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;

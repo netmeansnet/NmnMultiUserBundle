@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\UserBundle\Manager;
+namespace Nmn\MultiUserBundle\Manager;
 
 /**
  * Description of UserFactory
