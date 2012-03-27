@@ -9,6 +9,8 @@ It's just a lazy way to use for free most of the functionality of FOSMultiUserBu
 This bundle has been realized as a part of a real application that uses doctrine orm, 
 so for now it only supports the ORM db driver.
 
+The bundle is based on syfmony 2.0
+
 ## Prerequisites
 
 [FOSMultiUserBundle] (https://github.com/FriendsOfSymfony/FOSMultiUserBundle)
