@@ -13,7 +13,7 @@ The bundle is based on syfmony 2.0
 
 ## Prerequisites
 
-[FOSMultiUserBundle] (https://github.com/FriendsOfSymfony/FOSMultiUserBundle)
+[FOSUserBundle] (https://github.com/FriendsOfSymfony/FOSMultiUserBundle)
 
 ## Installation
 
