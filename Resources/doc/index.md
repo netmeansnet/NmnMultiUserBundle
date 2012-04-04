@@ -4,7 +4,7 @@ NmnMultiUserBundle Documentation
 NmnMultiUserBundle came by the need to use different types of users using only one fos_user service.
 In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
 
-It's just a lazy way to use for free most of the functionality of FOSMultiUserBundle.
+It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 
 This bundle has been realized as a part of a real application that uses doctrine orm,
 so for now it only supports the ORM db driver.
@@ -22,7 +22,7 @@ The bundle is based on syfmony 2.0
 3. Enable the Bundle
 4. Create your MultiUserBundle
 5. Create your Entities
-6. Configure the FOSMultiUserBundle (NmnMultiUserBundle params)
+6. Configure the FOSUserBundle (NmnMultiUserBundle params)
 7. Configure parameters for UserDiscriminator
 8. Create your controllers
 
@@ -179,9 +179,9 @@ class UserTwo extends User
 ```
 
 You must also create forms for your entities:
-see [Overriding Default FOSMultiUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSMultiUserBundle/blob/1.1.0/Resources/doc/overriding_forms.md)
+see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/1.1.0/Resources/doc/overriding_forms.md)
 
-### 6. Configure the FOSMultiUserBundle (NmnMultiUserBundle params)
+### 6. Configure the FOSUserBundle (NmnMultiUserBundle params)
 
 Keep in mind that NmnMultiUserBundle overwrites user_class via UserDiscriminator
 but it does it only in controllers and forms handlers; in the other cases (command, sonata integration, etc)
