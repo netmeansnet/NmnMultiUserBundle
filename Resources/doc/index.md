@@ -20,7 +20,7 @@ The bundle is based on syfmony 2.0
 1. Download NmnMultiUserBundle
 2. Configure the Autoloader
 3. Enable the Bundle
-4. Create your MultiUserBundle
+4. Create your UserBundle
 5. Create your Entities
 6. Configure the FOSUserBundle (NmnMultiUserBundle params)
 7. Configure parameters for UserDiscriminator
@@ -158,7 +158,7 @@ UserTwo
 ``` php
 <?php
 
-namespace Acme\MultiUserBundle\Entity;
+namespace Acme\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -206,7 +206,7 @@ fos_user:
 ### 7. Configure parameters for UserDiscriminator
 
 ``` yaml
-# Acme/MultiUserBundle/Resources/config/config.yml
+# Acme/UserBundle/Resources/config/config.yml
 
 parameters:
   nmn_user_discriminator_parameters:
@@ -232,7 +232,7 @@ To handle flow of user_two you must configure a route and add a controller in yo
 Route configuration
 
 ``` yaml
-# Acme/MultiUserBundle/Resources/config/routing.yml
+# Acme/UserBundle/Resources/config/routing.yml
 user_two_registration:
     pattern:  /register/user-two
     defaults: { _controller: AcmeUserBundle:RegistrationUserTwo:register }
