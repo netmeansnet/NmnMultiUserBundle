@@ -1,0 +1,33 @@
+{
+    "name": "netmeansnet/multi-user-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony NmnMultiUserBundle",
+    "keywords": ["User management"],
+    "homepage": "netmeans.net",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Leonardo Proietti",
+            "email": "leonardo@netmeans.net"
+        },
+        {
+            "name": "Eugenio Pombi",
+            "email": "eugenio@netmeans.net"
+        },
+        {
+            "name": "Community",
+            "homepage": "https://github.com/netmeansnet/NmnMultiUserBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.1",
+        "symfony/doctrine-bundle": "*",
+    },
+    "suggest": {
+    },
+    "autoload": {
+        "psr-0": { "Nmn\\MultiUserBundle": "" }
+    },
+    "target-dir": "Nmn/MultiUserBundle"
+}
