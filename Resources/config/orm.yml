@@ -2,7 +2,7 @@ services:
     # custom fosuser user manager    
     nmn_user.manager.orm_user_manager:
         class:     Nmn\MultiUserBundle\Manager\OrmUserManager
-        arguments: ["@security.encoder_factory", "@fos_user.util.username_canonicalizer", "@fos_user.util.email_canonicalizer", "@fos_user.entity_manager", %fos_user.model.user.class%, "@nmn_user.manager.user_discriminator"]
+        arguments: ["@security.encoder_factory", %fos_user.encoder.algorithm%, "@fos_user.util.username_canonicalizer", "@fos_user.util.email_canonicalizer", "@fos_user.entity_manager", %fos_user.model.user.class%, "@nmn_user.manager.user_discriminator"]
         
     nmn_user_manager:
         alias: nmn_user.manager.orm_user_manager
