@@ -38,6 +38,16 @@ Add the following lines in your `deps` file:
     target=bundles/Nmn/MultiUserBundle
 ```
 
+If you use FOSUserBundle 1.1:
+
+```
+[NmnMultiUserBundle]
+    git=git://github.com/netmeansnet/NmnMultiUserBundle.git
+    target=bundles/Nmn/MultiUserBundle
+    version=origin/1.1
+    
+```
+
 Now, run the vendors script to download the bundle:
 
 ``` bash
