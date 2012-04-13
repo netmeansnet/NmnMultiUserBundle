@@ -36,6 +36,7 @@ Add the following lines in your `deps` file:
 [NmnMultiUserBundle]
     git=git://github.com/netmeansnet/NmnMultiUserBundle.git
     target=bundles/Nmn/MultiUserBundle
+    version=origin/1.1
 ```
 
 Now, run the vendors script to download the bundle:
