@@ -1,28 +1,28 @@
 NmnMultiUserBundle Documentation
 ==================================
 
-NmnMultiUserBundle came by the need to use different types of users using only one fos_user service. 
+NmnMultiUserBundle came by the need to use different types of users using only one fos_user service.
 In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
 
-It's just a lazy way to use for free most of the functionality of FOSMultiUserBundle.
+It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 
-This bundle has been realized as a part of a real application that uses doctrine orm, 
+This bundle has been realized as a part of a real application that uses doctrine orm,
 so for now it only supports the ORM db driver.
 
 The bundle is based on syfmony 2.0
 
 ## Prerequisites
 
-[FOSUserBundle] (https://github.com/FriendsOfSymfony/FOSMultiUserBundle)
+[FOSUserBundle] (https://github.com/FriendsOfSymfony/FOSUserBundle)
 
 ## Installation
 
 1. Download NmnMultiUserBundle
 2. Configure the Autoloader
 3. Enable the Bundle
-4. Create your MultiUserBundle
+4. Create your UserBundle
 5. Create your Entities
-6. Configure the FOSMultiUserBundle (NmnMultiUserBundle params)
+6. Configure the FOSUserBundle (NmnMultiUserBundle params)
 7. Configure parameters for UserDiscriminator
 8. Create your controllers
 
@@ -75,18 +75,18 @@ public function registerBundles()
 }
 ```
 
-### 4. Create your MultiUserBundle
+### 4. Create your UserBundle
 
 Create a bundle that extends NmnMultiUserBundle
 ([How to use Bundle Inheritance to Override parts of a Bundle] (http://symfony.com/doc/current/cookbook/bundles/inheritance.html))
 
 ``` php
 <?php
-namespace Acme\MultiUserBundle;
+namespace Acme\UserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AcmeMultiUserBundle extends Bundle
+class AcmeUserBundle extends Bundle
 {
     public function getParent()
     {
@@ -99,15 +99,15 @@ class AcmeMultiUserBundle extends Bundle
 
 Create entities using Doctrine2 inheritance.
 
-Abstract User that directly extends from FOS\MultiUserBundle\Entity\User
+Abstract User that directly extends from FOS\UserBundle\Entity\User
 
 ``` php
 <?php
 
-namespace Acme\MultiUserBundle\Entity;
+namespace Acme\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use FOS\MultiUserBundle\Entity\User as BaseUser;
+use FOS\UserBundle\Entity\User as BaseUser;
 
 /**
  * @ORM\Entity
@@ -115,7 +115,7 @@ use FOS\MultiUserBundle\Entity\User as BaseUser;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"user_one" = "UserOne", "user_two" = "UserTwo"})
- * 
+ *
  */
 abstract class User extends BaseUser
 {
@@ -133,14 +133,14 @@ UserOne
 ``` php
 <?php
 
-namespace Acme\MultiUserBundle\Entity;
+namespace Acme\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user_one")
- * 
+ *
  */
 class UserOne extends User
 {
@@ -158,14 +158,14 @@ UserTwo
 ``` php
 <?php
 
-namespace Acme\MultiUserBundle\Entity;
+namespace Acme\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user_two")
- * 
+ *
  */
 class UserTwo extends User
 {
@@ -178,21 +178,21 @@ class UserTwo extends User
 }
 ```
 
-You must also create forms for your entities: 
-see [Overriding Default FOSMultiUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSMultiUserBundle/blob/1.1.0/Resources/doc/overriding_forms.md)
+You must also create forms for your entities:
+see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/1.1.0/Resources/doc/overriding_forms.md)
 
-### 6. Configure the FOSMultiUserBundle (NmnMultiUserBundle params)
+### 6. Configure the FOSUserBundle (NmnMultiUserBundle params)
 
 Keep in mind that NmnMultiUserBundle overwrites user_class via UserDiscriminator
 but it does it only in controllers and forms handlers; in the other cases (command, sonata integration, etc)
 it still uses the user_class configured in the config.
 
 ``` yaml
-# Acme/MultiUserBundle/Resources/config/config.yml
+# Acme/UserBundle/Resources/config/config.yml
 fos_user:
     db_driver: orm
     firewall_name: main
-    user_class: Acme\MultiUserBundle\Entity\User
+    user_class: Acme\UserBundle\Entity\User
     service:
         user_manager: nmn_user_manager
     registration:
@@ -202,48 +202,48 @@ fos_user:
         form:
             handler: nmn_user_profile_form_handler
 ```
-    
-### 7. Configure parameters for UserDiscriminator
-    
-``` yaml
-# Acme/MultiUserBundle/Resources/config/config.yml
 
-parameters:    
+### 7. Configure parameters for UserDiscriminator
+
+``` yaml
+# Acme/UserBundle/Resources/config/config.yml
+
+parameters:
   nmn_user_discriminator_parameters:
     classes:
         user_one:
-            entity: Acme\MultiUserBundle\Entity\UserOne
-            registration: Acme\MultiUserBundle\Form\Type\RegistrationUserOneFormType
-            profile: Acme\MultiUserBundle\Form\Type\ProfileUserOneFormType
-            factory: 
+            entity: Acme\UserBundle\Entity\UserOne
+            registration: Acme\UserBundle\Form\Type\RegistrationUserOneFormType
+            profile: Acme\UserBundle\Form\Type\ProfileUserOneFormType
+            factory:
         user_two:
-            entity: Acme\MultiUserBundle\Entity\UserTwo
-            registration: Acme\MultiUserBundle\Form\Type\RegistrationUserTwoFormType
-            profile: Acme\MultiUserBundle\Form\Type\ProfileUserTwoFormType
-            factory: 
+            entity: Acme\UserBundle\Entity\UserTwo
+            registration: Acme\UserBundle\Form\Type\RegistrationUserTwoFormType
+            profile: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
+            factory:
 ```
 
 ### 8. Create your controllers
 
-Nmn\MultiUserBundle\Controller\RegistrationController can handle registration flow only for 
-the first user passed to discriminator, in this case user_one. 
+Nmn\MultiUserBundle\Controller\RegistrationController can handle registration flow only for
+the first user passed to discriminator, in this case user_one.
 To handle flow of user_two you must configure a route and add a controller in your bundle.
 
 Route configuration
 
 ``` yaml
-# Acme/MultiUserBundle/Resources/config/routing.yml
+# Acme/UserBundle/Resources/config/routing.yml
 user_two_registration:
     pattern:  /register/user-two
-    defaults: { _controller: AcmeMultiUserBundle:RegistrationUserTwo:register }
+    defaults: { _controller: AcmeUserBundle:RegistrationUserTwo:register }
 ```
 
-Controller 
+Controller
 
 ``` php
 <?php
 
-namespace Acme\MultiUserBundle\Controller;
+namespace Acme\UserBundle\Controller;
 
 use Nmn\MultiUserBundle\Controller\RegistrationController as BaseController;
 
@@ -251,9 +251,9 @@ class RegistrationUserTwoController extends BaseController
 {
     public function registerAction()
     {
-        $discriminator = $this->container->get('nmn_user_discriminator');         
-        $discriminator->setClass('Acme\MultiUserBundle\Entity\UserTwo'); 
-        
+        $discriminator = $this->container->get('nmn_user_discriminator');
+        $discriminator->setClass('Acme\UserBundle\Entity\UserTwo');
+
         return parent::registerAction();
     }
 }
@@ -266,7 +266,7 @@ If you want to render your custom view
 ```php
 <?php
 
-namespace Acme\MultiUserBundle\Controller;
+namespace Acme\UserBundle\Controller;
 
 use Nmn\MultiUserBundle\Controller\RegistrationController as BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -275,33 +275,33 @@ class RegistrationUserTwoController extends BaseController
 {
     public function registerAction()
     {
-        $discriminator = $this->container->get('nmn_user_discriminator');         
-        $discriminator->setClass('Acme\MultiUserBundle\Entity\UserTwo'); 
+        $discriminator = $this->container->get('nmn_user_discriminator');
+        $discriminator->setClass('Acme\UserBundle\Entity\UserTwo');
         $form = $discriminator->getRegistrationForm();
-        
+
         $return = parent::registerAction();
-        
+
         if ($return instanceof RedirectResponse) {
             return $return;
         }
-        
-        return $this->container->get('templating')->renderResponse('AcmeMultiUserBundle:Registration:user_two.form.html.'.$this->getEngine(), array(
+
+        return $this->container->get('templating')->renderResponse('AcmeUserBundle:Registration:user_two.form.html.'.$this->getEngine(), array(
             'form' => $form->createView(),
             'theme' => $this->container->getParameter('fos_user.template.theme'),
-        ));   
+        ));
     }
 }
 ```
 
 **Customize all registrations**
 
-You can also define a custom route for UserOne but in this case remember to override the 
+You can also define a custom route for UserOne but in this case remember to override the
 RegistrationController and create the route and the controller for UserOne
 
 ```php
 <?php
 
-namespace Acme\MultiUserBundle\Controller;
+namespace Acme\UserBundle\Controller;
 
 use Nmn\MultiUserBundle\Controller\RegistrationController as BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -310,7 +310,7 @@ class RegistrationController extends BaseController
 {
     public function registerAction()
     {
-        $url = $this->container->get('router')->generate('home');        
+        $url = $this->container->get('router')->generate('home');
         return new RedirectResponse($url);
     }
 }
