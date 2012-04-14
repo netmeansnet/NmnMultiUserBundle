@@ -15,7 +15,18 @@ $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
     'Symfony'                => array($vendorDir.'/symfony/src', $vendorDir.'/bundles'),
     'FOS'        => array($vendorDir.'/bundles/'),
-    'Nmn' => __DIR__ . '/../../../',
 ));
 
 $loader->register();
+
+spl_autoload_register(function($class) {
+    if (0 === strpos($class, 'Nmn\\MultiUserBundle\\')) {
+        $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 2)).'.php';
+        if (!stream_resolve_include_path($path)) {
+            return false;
+        }
+        require_once $path;
+
+        return true;
+    }
+});
