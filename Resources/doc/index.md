@@ -271,8 +271,6 @@ class RegistrationUserTwoController extends BaseController
 
 **Custom view**
 
-If you want to render your custom view
-
 ```php
 <?php
 
