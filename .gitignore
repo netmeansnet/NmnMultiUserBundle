@@ -1,1 +1,3 @@
 report/
+vendor/bundles
+vendor/symfony

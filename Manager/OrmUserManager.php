@@ -72,10 +72,7 @@ class OrmUserManager extends BaseUserManager
                         
             $user = $repo->findOneBy($criteria);
             
-            if ($user) {
-                
-                $this->userDiscriminator->setClass($class, true);
-                
+            if ($user) {                
                 return $user;
             }
         }
