@@ -17,8 +17,8 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Symfony' => array($vendorDir.'/symfony/src', $vendorDir.'/bundles'),
-    'FOS' => array($vendorDir.'/bundles/'),
+    'Symfony'                => array($vendorDir.'/symfony/src', $vendorDir.'/bundles'),
+    'FOS'        => array($vendorDir.'/bundles/'),
 ));
 
 $loader->register();
@@ -33,4 +33,5 @@ spl_autoload_register(function($class) {
 
         return true;
     }
+
 });

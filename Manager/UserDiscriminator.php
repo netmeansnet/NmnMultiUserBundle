@@ -3,6 +3,8 @@
 namespace Nmn\MultiUserBundle\Manager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use FOS\UserBundle\Model\UserInterface;
 
 /**
  * Description of UserDiscriminator
@@ -41,6 +43,17 @@ class UserDiscriminator
         $config = $this->buildConfig($parameters);
     }
     
+    
+    /**
+     *
+     * @param InteractiveLoginEvent $event 
+     */
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    {
+        $user = $event->getAuthenticationToken()->getUser();
+        $this->setClass(get_class($user), true);
+    }
+    
     /**
      *
      * @return array 
@@ -74,7 +87,11 @@ class UserDiscriminator
      * @return string 
      */
     public function getClass()
-    {
+    {       
+        if (!is_null($this->class)) {
+            return $this->class;
+        }
+        
         $session     = $this->serviceContainer->get('session');
         $storedClass = $session->get(static::SESSION_NAME, null);
 

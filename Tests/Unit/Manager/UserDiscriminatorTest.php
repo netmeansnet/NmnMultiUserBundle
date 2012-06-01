@@ -6,6 +6,7 @@ use Nmn\MultiUserBundle\Tests\Unit\TestCase;
 use Nmn\MultiUserBundle\Manager\UserDiscriminator;
 use Nmn\MultiUserBundle\Tests\Unit\Stub\UserRegistrationForm;
 use Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUserProfileForm;
+use Nmn\MultiUserBundle\Tests\Unit\Stub\User;
 
 class UserDiscriminatorTest extends TestCase
 {
@@ -33,6 +34,11 @@ class UserDiscriminatorTest extends TestCase
         $this->discriminator = new UserDiscriminator($this->container, $this->parameters);
                 
         $this->session = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session')->disableOriginalConstructor()->getMock();
+        
+        $this->event = $this->getMockBuilder('Symfony\Component\Security\Http\Event\InteractiveLoginEvent')->disableOriginalConstructor()->getMock();       
+        $this->token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')->disableOriginalConstructor()->getMock();       
+        $this->user = new User();  
+        $this->userInvalid = $this->getMockBuilder('InvalidUser')->disableOriginalConstructor()->getMock();  
     }
 
     /**
@@ -108,11 +114,8 @@ class UserDiscriminatorTest extends TestCase
     }
     
     public function testGetClass() 
-    {
-        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
-        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));        
-        $this->discriminator->setClass('Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser');
-        
+    {  
+        $this->discriminator->setClass('Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser');        
         $this->assertEquals('Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser', $this->discriminator->getClass());
     }
     
@@ -133,10 +136,7 @@ class UserDiscriminatorTest extends TestCase
     }
     
     public function testCreateUser()
-    {
-        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
-        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));
-                
+    {                
         $this->discriminator->setClass('Nmn\MultiUserBundle\Tests\Unit\Stub\User');
         $this->discriminator->createUser();
     }
@@ -171,4 +171,17 @@ class UserDiscriminatorTest extends TestCase
         
         $this->discriminator->getProfileForm();
     }
+    
+    public function testOnSecurityInteractiveLogin()
+    {
+        $this->event->expects($this->once())->method('getAuthenticationToken')->will($this->returnValue($this->token));
+        $this->token->expects($this->once())->method('getUser')->will($this->returnValue($this->user));
+        
+        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
+        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'Nmn\MultiUserBundle\Tests\Unit\Stub\User');
+        
+        $this->discriminator->onSecurityInteractiveLogin($this->event);
+        $this->assertEquals(get_class($this->user), $this->discriminator->getClass());        
+    }
+    
 }
