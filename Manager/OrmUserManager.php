@@ -33,12 +33,10 @@ class OrmUserManager extends BaseUserManager
      */
     public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, EntityManager $em, $class, UserDiscriminator $userDiscriminator)
     {
-        $this->em = $em;
-        
+        $this->em = $em;        
         $this->userDiscriminator = $userDiscriminator;
-        $this->class             = $this->userDiscriminator->getClass();
         
-        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $em, $this->class);
+        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $em, $class);
     }
     
     public function createUser()

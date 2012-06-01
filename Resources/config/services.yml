@@ -18,14 +18,9 @@ services:
     nmn_user.manager.user_discriminator:
         class:     Nmn\MultiUserBundle\Manager\UserDiscriminator
         arguments: ["@service_container", %nmn_user_discriminator_parameters%]
-        
-    # login listener
-    nmn_user.security.login_listener:
-        class: Nmn\MultiUserBundle\Security\InteractiveLoginListener
-        arguments: ["@nmn_user_discriminator"]
         tags:
             - { name: kernel.event_listener, event: security.interactive_login }
-        
+                
     # alias
     nmn_user_registration_form_handler:
         alias: nmn_user.form.handler.registration
