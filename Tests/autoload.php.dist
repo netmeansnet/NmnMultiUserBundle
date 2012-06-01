@@ -2,6 +2,10 @@
 
 $vendorDir = __DIR__.'/../vendor';
 
+if (class_exists('Symfony\Component\ClassLoader\UniversalClassLoader')) {
+    return;
+}
+
 if (file_exists($file = $vendorDir . '/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php')) {
     $autoload = require_once $file;
 } else {

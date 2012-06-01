@@ -1,6 +1,10 @@
 #!/usr/bin/env php
 <?php
 
+if (class_exists('Symfony\Component\ClassLoader\UniversalClassLoader')) {
+    return;
+}
+
 set_time_limit(0);
 
 if (isset($argv[1])) {
