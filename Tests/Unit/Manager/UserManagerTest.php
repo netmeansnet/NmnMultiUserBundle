@@ -51,7 +51,6 @@ class UserManagerTest extends TestCase
         $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('Nmn\MultiUserBundle\Tests\Unit\Stub\User')));
         $this->em->expects($this->exactly(1))->method('getRepository');
         $this->repo->expects($this->exactly(1))->method('findOneBy')->with(array('criteria' => 'dummy'))->will($this->onConsecutiveCalls(true));        
-        $this->userDiscriminator->expects($this->exactly(1))->method('setClass')->will($this->onConsecutiveCalls(null));
                 
         $this->userManager->findUserBy(array('criteria' => 'dummy'));
     }
