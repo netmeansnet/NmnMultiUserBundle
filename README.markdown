@@ -7,7 +7,7 @@ For now only supports the ORM db driver and is based on the doctrine2 inheritanc
 The branch master is developed upon Symfony 2.0.12 and FOSUserBundle 1.2.
 The branch 1.1 supports FOSUserBundle 1.1
 
-[![Build Status](https://secure.travis-ci.org/netmeansnet/NmnMultiUserBundle.png)](http://travis-ci.org/netmeansnet/NmnMultiUserBundle)
+[![Build Status](https://secure.travis-ci.org/netmeansnet/NmnMultiUserBundle.png?branch=1.1)](http://travis-ci.org/netmeansnet/NmnMultiUserBundle)
 
 Documentation
 -------------
