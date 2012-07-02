@@ -32,11 +32,10 @@ class RegistrationControllerTest extends TestCase
         $this->userDiscriminator->expects($this->exactly(1))->method('getRegistrationForm')->will($this->onConsecutiveCalls('form')); 
         $this->container->expects($this->exactly(1))->method('set')->with('fos_user.registration.form', 'form')->will($this->onConsecutiveCalls(null)); 
         
-        $this->container->expects($this->exactly(3))->method('getParameter')->with($this->logicalOr(
+        $this->container->expects($this->exactly(2))->method('getParameter')->with($this->logicalOr(
                 'fos_user.registration.confirmation.enabled',
-                'fos_user.template.theme',
                 'fos_user.template.engine'))
-                ->will($this->onConsecutiveCalls(false, 'theme', 'engine'));         
+                ->will($this->onConsecutiveCalls(false, 'engine'));
                  
         $this->formHandler->expects($this->exactly(1))->method('process')->will($this->onConsecutiveCalls(false));      
         $this->templating->expects($this->exactly(1))->method('renderResponse')->will($this->onConsecutiveCalls($this->responseExpected)); 
