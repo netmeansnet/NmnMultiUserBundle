@@ -3,7 +3,7 @@ services:
     # custom fosuser registration form handler
     nmn_user.form.handler.registration:
         class: Nmn\MultiUserBundle\Form\Handler\RegistrationFormHandler
-        arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer", "@nmn_user.manager.user_discriminator"]
+        arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer","@fos_user.util.token_generator.default","@nmn_user.manager.user_discriminator"]
         scope: request
         public: false
     
