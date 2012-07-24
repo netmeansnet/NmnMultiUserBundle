@@ -4,7 +4,7 @@ namespace Nmn\MultiUserBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use FOS\UserBundle\Model\UserInterface;
-use FOS\UserBundle\Entity\UserManager as BaseUserManager;
+use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -33,7 +33,7 @@ class OrmUserManager extends BaseUserManager
      */
     public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, EntityManager $em, $class, UserDiscriminator $userDiscriminator)
     {
-        $this->em = $em;        
+        $this->em = $em;
         $this->userDiscriminator = $userDiscriminator;
         
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $em, $class);
@@ -49,7 +49,7 @@ class OrmUserManager extends BaseUserManager
      */
     public function getClass()
     {
-        return $this->userDiscriminator->getClass();
+        return $this->class;
     }
 
     /**
@@ -121,7 +121,7 @@ class OrmUserManager extends BaseUserManager
                 return $users;
             }
         }
-        
+
         return array();
     }
 
