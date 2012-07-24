@@ -15,9 +15,11 @@ class ResettingController extends BaseController
         $return = parent::resetAction($token);
         
         if ($return instanceof RedirectResponse) {
-            $user = $this->container->get('security.context')->getToken()->getUser();
-            $discriminator = $this->container->get('nmn_user_discriminator');
-            $discriminator->setClass(get_class($user), true);
+            $user = $this->container->get('security.context')->getToken()->getUser();            
+            if ( $user ) {
+                $discriminator = $this->container->get('nmn_user_discriminator');
+                $discriminator->setClass(get_class($user), true);
+            }            
         }
         
         return $return;
