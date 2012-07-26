@@ -129,7 +129,7 @@ class UserDiscriminator
         if (is_null($this->registrationForm)) {
             $formFactory            = $this->serviceContainer->get('form.factory');
             $type                   = $this->getRegistrationFormType($this->getClass());
-            $this->registrationForm = $formFactory->createNamed($type->getName(), $type, null, array('validation_groups' => array(0 => 'Registration', 1 => 'Default')));
+            $this->registrationForm = $formFactory->createNamed($type->getName(), $type);
         }
 
         return $this->registrationForm;
@@ -144,7 +144,7 @@ class UserDiscriminator
         if (is_null($this->profileForm)) {
             $formFactory        = $this->serviceContainer->get('form.factory');
             $type               = $this->getProfileFormType($this->getClass());
-            $this->profileForm  = $formFactory->createNamed($type->getName(), $type, null, array('validation_groups' => array(0 => 'Profile', 1 => 'Default')));
+            $this->profileForm  = $formFactory->createNamed($type->getName(), $type);
         }
                 
         return $this->profileForm;
