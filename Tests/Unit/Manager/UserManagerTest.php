@@ -38,14 +38,7 @@ class UserManagerTest extends TestCase
         
         $this->userManager->createUser();
     }
-    
-    public function testGetClass()
-    {
-        $this->userDiscriminator->expects($this->exactly(1))->method('getClass')->will($this->onConsecutiveCalls(null));
         
-        $this->userManager->getClass();
-    }
-    
     public function testFindUserBy()
     {                
         $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('Nmn\MultiUserBundle\Tests\Unit\Stub\User')));
