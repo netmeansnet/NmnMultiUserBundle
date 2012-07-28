@@ -10,16 +10,17 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Mailer\MailerInterface;
 use Nmn\MultiUserBundle\Manager\UserDiscriminator;
+use FOS\UserBundle\Util\TokenGeneratorInterface;
 
 class RegistrationFormHandler extends BaseRegistrationFormHandler
 {    
     protected $userDiscriminator;
 
-    public function __construct(Form $form, Request $request, UserManagerInterface $userManager, MailerInterface $mailer, UserDiscriminator $userDiscriminator)
+    public function __construct(Form $form, Request $request, UserManagerInterface $userManager, MailerInterface $mailer, TokenGeneratorInterface $tokenGenerator, UserDiscriminator $userDiscriminator)
     {
         $this->userDiscriminator = $userDiscriminator;
         $form = $userDiscriminator->getRegistrationForm();
         
-        parent::__construct($form, $request, $userManager, $mailer);
+        parent::__construct($form, $request, $userManager, $mailer, $tokenGenerator);
     }    
 }
