@@ -274,7 +274,6 @@ class RegistrationUserTwoController extends BaseController
 
         return $this->container->get('templating')->renderResponse('AcmeUserBundle:Registration:user_two.form.html.'.$this->getEngine(), array(
             'form' => $form->createView(),
-            'theme' => $this->container->getParameter('fos_user.template.theme'),
         ));
     }
 }
