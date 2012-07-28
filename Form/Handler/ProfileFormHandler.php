@@ -10,12 +10,13 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Mailer\MailerInterface;
 use Nmn\MultiUserBundle\Manager\UserDiscriminator;
+use Symfony\Component\Form\FormInterface;
 
 class ProfileFormHandler extends BaseProfileFormHandler
 {    
     protected $userDiscriminator;
 
-    public function __construct(Form $form, Request $request, UserManagerInterface $userManager, UserDiscriminator $userDiscriminator)
+    public function __construct(FormInterface $form, Request $request, UserManagerInterface $userManager, UserDiscriminator $userDiscriminator)
     {
         $this->userDiscriminator = $userDiscriminator;
         $form = $userDiscriminator->getProfileForm();

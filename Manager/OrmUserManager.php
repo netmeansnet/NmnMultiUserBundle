@@ -2,7 +2,7 @@
 
 namespace Nmn\MultiUserBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
@@ -28,15 +28,15 @@ class OrmUserManager extends BaseUserManager
      * @param EncoderFactoryInterface $encoderFactory
      * @param CanonicalizerInterface  $usernameCanonicalizer
      * @param CanonicalizerInterface  $emailCanonicalizer
-     * @param EntityManager           $em
+     * @param EntityManager           $om
      * @param string                  $class
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, EntityManager $em, $class, UserDiscriminator $userDiscriminator)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, UserDiscriminator $userDiscriminator)
     {
-        $this->em = $em;
+        $this->om = $om;
         $this->userDiscriminator = $userDiscriminator;
         
-        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $em, $class);
+        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
     }
     
     public function createUser()
@@ -61,7 +61,7 @@ class OrmUserManager extends BaseUserManager
                 
         foreach ($classes as $class) {
 
-            $repo = $this->em->getRepository($class);
+            $repo = $this->om->getRepository($class);
             
             if (!$repo) {
                 throw new \LogicException(sprintf('Repository "%s" not found', $class));
@@ -86,7 +86,7 @@ class OrmUserManager extends BaseUserManager
         
         $users = array();
         foreach ($classes as $class) {
-            $repo = $this->em->getRepository($class);
+            $repo = $this->om->getRepository($class);
                         
             $users = $repo->findAll();
             
@@ -112,7 +112,7 @@ class OrmUserManager extends BaseUserManager
                 
         foreach ($classes as $class) {
 
-            $repo = $this->em->getRepository($class);
+            $repo = $this->om->getRepository($class);
                         
             $users = $repo->findBy($this->getCriteria($value, $fields));
             
