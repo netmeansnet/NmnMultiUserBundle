@@ -9,66 +9,45 @@ It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 This bundle has been realized as a part of a real application that uses doctrine orm,
 so for now it only supports the ORM db driver.
 
-The bundle is based on syfmony 2.0
 
 ## Prerequisites
+
+This version of the bundle requires Symfony 2.1.
 
 [FOSUserBundle] (https://github.com/FriendsOfSymfony/FOSUserBundle)
 
 ## Installation
 
 1. Download NmnMultiUserBundle
-2. Configure the Autoloader
-3. Enable the Bundle
-4. Create your UserBundle
-5. Create your Entities
-6. Configure the FOSUserBundle (NmnMultiUserBundle params)
-7. Configure parameters for UserDiscriminator
-8. Create your controllers
+2. Enable the Bundle
+3. Create your UserBundle
+4. Create your Entities
+5. Configure the FOSUserBundle (NmnMultiUserBundle params)
+6. Configure parameters for UserDiscriminator
+7. Create your controllers
 
 ### 1. Download NmnMultiUserBundle
 
-**Using the vendors script**
+**Using composer**
 
-Add the following lines in your `deps` file:
-
-```
-[NmnMultiUserBundle]
-    git=git://github.com/netmeansnet/NmnMultiUserBundle.git
-    target=bundles/Nmn/MultiUserBundle
-```
-
-If you use FOSUserBundle 1.1:
+Add the following lines in your composer.json:
 
 ```
-[NmnMultiUserBundle]
-    git=git://github.com/netmeansnet/NmnMultiUserBundle.git
-    target=bundles/Nmn/MultiUserBundle
-    version=origin/1.1
-    
+{
+    "require": {
+        "netmeansnet/multi-user-bundle": "dev-master"
+    }
+}
+
 ```
 
-Now, run the vendors script to download the bundle:
+Now, run the composer to download the bundle:
 
 ``` bash
-$ php bin/vendors install
+$ php composer.phar update netmeansnet/multi-user-bundle
 ```
 
-### 2. Configure the Autoloader
-
-Add the `Nmn` namespace to your autoloader:
-
-``` php
-<?php
-// app/autoload.php
-
-$loader->registerNamespaces(array(
-    // ...
-    'Nmn' => __DIR__.'/../vendor/bundles',
-));
-```
-
-### 3. Enable the bundle
+### 2. Enable the bundle
 
 Enable the bundle in the kernel:
 
@@ -85,7 +64,7 @@ public function registerBundles()
 }
 ```
 
-### 4. Create your UserBundle
+### 3. Create your UserBundle
 
 Create a bundle that extends NmnMultiUserBundle
 ([How to use Bundle Inheritance to Override parts of a Bundle] (http://symfony.com/doc/current/cookbook/bundles/inheritance.html))
@@ -105,7 +84,7 @@ class AcmeUserBundle extends Bundle
 }
 ```
 
-### 5. Create your Entities
+### 4. Create your Entities
 
 Create entities using Doctrine2 inheritance.
 
@@ -191,7 +170,7 @@ class UserTwo extends User
 You must also create forms for your entities:
 see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/1.1.0/Resources/doc/overriding_forms.md)
 
-### 6. Configure the FOSUserBundle (NmnMultiUserBundle params)
+### 5. Configure the FOSUserBundle (NmnMultiUserBundle params)
 
 Keep in mind that NmnMultiUserBundle overwrites user_class via UserDiscriminator
 but it does it only in controllers and forms handlers; in the other cases (command, sonata integration, etc)
@@ -213,7 +192,7 @@ fos_user:
             handler: nmn_user_profile_form_handler
 ```
 
-### 7. Configure parameters for UserDiscriminator
+### 6. Configure parameters for UserDiscriminator
 
 ``` yaml
 # Acme/UserBundle/Resources/config/config.yml
@@ -233,7 +212,7 @@ parameters:
             factory:
 ```
 
-### 8. Create your controllers
+### 7. Create your controllers
 
 Nmn\MultiUserBundle\Controller\RegistrationController can handle registration flow only for
 the first user passed to discriminator, in this case user_one.
