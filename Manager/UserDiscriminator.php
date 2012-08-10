@@ -5,6 +5,7 @@ namespace Nmn\MultiUserBundle\Manager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use FOS\UserBundle\Model\UserInterface;
+use Nmn\MultiUserBundle\Event\ManualLoginEvent;
 
 /**
  * Description of UserDiscriminator
@@ -54,6 +55,16 @@ class UserDiscriminator
         $this->setClass(get_class($user), true);
     }
     
+    /**
+     *
+     * @param ManualLoginEvent $event
+     */
+    public function onSecurityManualLogin(ManualLoginEvent $event) 
+    {
+        $user = $event->getUser();
+        $this->setClass(get_class($user), true);
+    }
+
     /**
      *
      * @return array 

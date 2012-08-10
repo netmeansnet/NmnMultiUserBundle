@@ -184,4 +184,16 @@ class UserDiscriminatorTest extends TestCase
         $this->assertEquals(get_class($this->user), $this->discriminator->getClass());        
     }
     
+    public function testOnSecurityManualLogin()
+    {
+        $this->eventManualLogin = $this->getMockBuilder('Nmn\MultiUserBundle\Event\ManualLoginEvent')->disableOriginalConstructor()->getMock();
+        $this->eventManualLogin->expects($this->once())->method('getUser')->will($this->returnValue($this->user));
+        
+        $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
+        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'Nmn\MultiUserBundle\Tests\Unit\Stub\User');
+        
+        $this->discriminator->onSecurityManualLogin($this->eventManualLogin);
+        $this->assertEquals(get_class($this->user), $this->discriminator->getClass());
+    }
+    
 }
