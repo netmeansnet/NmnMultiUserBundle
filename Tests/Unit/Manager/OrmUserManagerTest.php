@@ -5,7 +5,7 @@ namespace Nmn\MultiUserBundle\Tests\Unit\Manager;
 use Nmn\MultiUserBundle\Tests\Unit\TestCase;
 use Nmn\MultiUserBundle\Manager\OrmUserManager as UserManager;
 
-class UserManagerTest extends TestCase
+class OrmUserManagerTest extends TestCase
 {
     public function setUp()
     {
@@ -35,7 +35,15 @@ class UserManagerTest extends TestCase
         $this->userManager = new UserManager($this->encoderFactory, $this->usernameCanonicalizer, $this->omailCanonicalizer, $this->om, $this->class, $this->userDiscriminator);
     }
         
-    
+    public function testGetClass()
+    {
+        $this->userDiscriminator->expects($this->exactly(1))->method('getClass')->will($this->returnValue('A\Class\Path'));
+        
+        $result = $this->userManager->getClass();
+
+        $this->assertEquals('A\Class\Path', $result);
+    }
+
     public function testCreateUser()
     {
         $this->userDiscriminator->expects($this->exactly(1))->method('createUser')->will($this->onConsecutiveCalls(null));

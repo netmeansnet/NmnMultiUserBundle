@@ -49,7 +49,7 @@ class OrmUserManager extends BaseUserManager
      */
     public function getClass()
     {
-        return $this->class;
+        return $this->userDiscriminator->getClass();
     }
 
     /**
