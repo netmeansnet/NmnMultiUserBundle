@@ -4,7 +4,9 @@ NmnMultiUserBundle
 The NmnMultiUserBundle extends FOSUserBundle adding the feature to handle users of different types.
 For now only supports the ORM db driver and is based on the doctrine2 inheritance.
 
-This branc supports FOSUserBundle 1.1
+This branch supports FOSUserBundle 1.1
+
+*** THIS BRANCH IS NOT MAINTAINED ANYMORE, please upgrade FOSUser and NmnMultiUser ***
 
 [![Build Status](https://secure.travis-ci.org/netmeansnet/NmnMultiUserBundle.png?branch=1.1)](http://travis-ci.org/netmeansnet/NmnMultiUserBundle)
 
