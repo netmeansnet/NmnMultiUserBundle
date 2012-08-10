@@ -4,6 +4,7 @@ namespace Nmn\MultiUserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\ResettingController as BaseController;
+use Nmn\MultiUserBundle\Event\ManualLoginEvent;
 
 class ResettingController extends BaseController
 {
@@ -17,8 +18,9 @@ class ResettingController extends BaseController
         if ($return instanceof RedirectResponse) {
             $user = $this->container->get('security.context')->getToken()->getUser();            
             if ( $user ) {
-                $discriminator = $this->container->get('nmn_user_discriminator');
-                $discriminator->setClass(get_class($user), true);
+                $dispatcher = $this->container->get('event_dispatcher');
+                $event = new ManualLoginEvent($user);
+                $dispatcher->dispatch('security.manual_login', $event);
             }            
         }
         
