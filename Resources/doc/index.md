@@ -212,6 +212,30 @@ parameters:
             factory:
 ```
 
+If you need to pass custom options to the form (like a validation groups)
+
+``` yaml
+# Acme/UserBundle/Resources/config/config.yml
+
+parameters:
+  nmn_user_discriminator_parameters:
+    classes:
+        user_one:
+            entity: Acme\UserBundle\Entity\UserOne
+            registration: Acme\UserBundle\Form\Type\RegistrationUserOneFormType
+            registration_options: 
+                validation_groups: [Registration, Default]
+            profile: Acme\UserBundle\Form\Type\ProfileUserOneFormType
+            profile_options: 
+                validation_groups: [Profile, Default]
+            factory:
+        user_two:
+            entity: Acme\UserBundle\Entity\UserTwo
+            registration: Acme\UserBundle\Form\Type\RegistrationUserTwoFormType
+            profile: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
+            factory:
+```
+
 ### 7. Create your controllers
 
 Nmn\MultiUserBundle\Controller\RegistrationController can handle registration flow only for

@@ -46,8 +46,7 @@ class UserDiscriminatorTest extends TestCase
      * @return void
      */
     public function testConstructor()
-    {
-        
+    {        
         $reflectionClass = new \ReflectionClass("Nmn\MultiUserBundle\Manager\UserDiscriminator");
 
         $entities               = $reflectionClass->getProperty('entities');
@@ -151,7 +150,7 @@ class UserDiscriminatorTest extends TestCase
                 'session',
                 'form.factory'))
                 ->will($this->onConsecutiveCalls($formFactory, $this->session));        
-        $formFactory->expects($this->exactly(1))->method('createNamed')->with('form_name', $type)->will($this->onConsecutiveCalls(null));
+        $formFactory->expects($this->exactly(1))->method('createNamed')->with('form_name', $type, null, array('validation_groups' => array('Registration', 'Default')))->will($this->onConsecutiveCalls(null));
         
         $this->discriminator->getRegistrationForm();
     }
@@ -167,7 +166,7 @@ class UserDiscriminatorTest extends TestCase
                 'session',
                 'form.factory'))
                 ->will($this->onConsecutiveCalls($formFactory, $this->session));        
-        $formFactory->expects($this->exactly(1))->method('createNamed')->with('form_name', $type)->will($this->onConsecutiveCalls(null));
+        $formFactory->expects($this->exactly(1))->method('createNamed')->with('form_name', $type, null, array('validation_groups' => array('Profile', 'Default')))->will($this->onConsecutiveCalls(null));
         
         $this->discriminator->getProfileForm();
     }
