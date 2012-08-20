@@ -245,10 +245,10 @@ parameters:
             entity: Acme\UserBundle\Entity\UserOne
             registration: Acme\UserBundle\Form\Type\RegistrationUserOneFormType
             registration_options: 
-                validation_groups: [Registration]
+                validation_groups: [Registration, Default]
             profile: Acme\UserBundle\Form\Type\ProfileUserOneFormType
             profile_options: 
-                validation_groups: [Profile]
+                validation_groups: [Profile, Default]
             factory:
         user_two:
             entity: Acme\UserBundle\Entity\UserTwo

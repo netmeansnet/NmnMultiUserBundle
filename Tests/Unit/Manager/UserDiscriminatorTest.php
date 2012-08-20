@@ -151,7 +151,7 @@ class UserDiscriminatorTest extends TestCase
                 'session',
                 'form.factory'))
                 ->will($this->onConsecutiveCalls($formFactory, $this->session));        
-        $formFactory->expects($this->exactly(1))->method('createNamed')->with($type, 'form_name')->will($this->onConsecutiveCalls(null));
+        $formFactory->expects($this->exactly(1))->method('createNamed')->with($type, 'form_name', null, array('validation_groups' => array('Registration', 'Default')))->will($this->onConsecutiveCalls(null));
         
         $this->discriminator->getRegistrationForm();
     }
@@ -167,7 +167,7 @@ class UserDiscriminatorTest extends TestCase
                 'session',
                 'form.factory'))
                 ->will($this->onConsecutiveCalls($formFactory, $this->session));        
-        $formFactory->expects($this->exactly(1))->method('createNamed')->with($type, 'form_name')->will($this->onConsecutiveCalls(null));
+        $formFactory->expects($this->exactly(1))->method('createNamed')->with($type, 'form_name', null, array('validation_groups' => array('Profile', 'Default')))->will($this->onConsecutiveCalls(null));
         
         $this->discriminator->getProfileForm();
     }

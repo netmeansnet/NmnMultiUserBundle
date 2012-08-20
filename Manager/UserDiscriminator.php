@@ -216,12 +216,12 @@ class UserDiscriminator
      */
     protected function setProfileFormOptions(array $parameter)
     {
-        if (!array_key_exists('profile_options', $parameter) || !array_key_exists('validation_groups', $parameter['registration_options'])) {
+        if (!array_key_exists('profile_options', $parameter) || !array_key_exists('validation_groups', $parameter['profile_options'])) {
             $this->profileFormOptions[$parameter['entity']] = array('validation_groups' => array('Profile', 'Default'));
             return;
         }
         
-        $this->profileFormOptions[$parameter['entity']] = $parameter['registration_options'];
+        $this->profileFormOptions[$parameter['entity']] = $parameter['profile_options'];
     }
 
     /**
