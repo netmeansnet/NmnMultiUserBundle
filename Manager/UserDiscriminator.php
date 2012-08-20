@@ -21,9 +21,9 @@ class UserDiscriminator
     
     protected $entities;
     
-    protected $registrationFormTypes;
+    protected $registrationFormTypes;   
     
-    protected $profileFormTypes;
+    protected $profileFormTypes;   
     
     protected $userFactories;
     
@@ -33,6 +33,11 @@ class UserDiscriminator
     
     protected $class = null;
     
+    protected $registrationFormOptions = array();
+    
+    protected $profileFormOptions = array();
+    
+    
     /**
      *
      * @param ContainerInterface $serviceContainer 
@@ -41,7 +46,7 @@ class UserDiscriminator
     {
         $this->serviceContainer = $serviceContainer;
         
-        $config = $this->buildConfig($parameters);
+        $this->buildConfig($parameters);
     }
     
     
@@ -136,11 +141,11 @@ class UserDiscriminator
      * @return \Symfony\Component\Form\Form 
      */
     public function getRegistrationForm()
-    {           
+    {                   
         if (is_null($this->registrationForm)) {
             $formFactory            = $this->serviceContainer->get('form.factory');
             $type                   = $this->getRegistrationFormType($this->getClass());
-            $this->registrationForm = $formFactory->createNamed($type, $type->getName());
+            $this->registrationForm = $formFactory->createNamed($type, $type->getName(), null, $this->registrationFormOptions[$this->getClass()]);
         }
 
         return $this->registrationForm;
@@ -155,7 +160,7 @@ class UserDiscriminator
         if (is_null($this->profileForm)) {
             $formFactory        = $this->serviceContainer->get('form.factory');
             $type               = $this->getProfileFormType($this->getClass());
-            $this->profileForm  = $formFactory->createNamed($type, $type->getName());
+            $this->profileForm  = $formFactory->createNamed($type, $type->getName(), null, $this->profileFormOptions[$this->getClass()]);
         }
                 
         return $this->profileForm;
@@ -186,7 +191,39 @@ class UserDiscriminator
                         
         return $type;
     }
+
+    /**
+     * This function is needed due a bad bundle architecture.
+     * I would have had to use a MultiUser configuration with default values
+     * 
+     * @param array $parameter
+     */
+    protected function setRegistrationFormOptions(array $parameter)
+    {
+        if (!array_key_exists('registration_options', $parameter) || !array_key_exists('validation_groups', $parameter['registration_options'])) {
+            $this->registrationFormOptions[$parameter['entity']] = array('validation_groups' => array('Registration', 'Default'));
+            return;
+        }
         
+        $this->registrationFormOptions[$parameter['entity']] = $parameter['registration_options'];        
+    }
+    
+    /**
+     * This function is needed due a bad bundle architecture.
+     * I would have had to use a MultiUser configuration with default values
+     * 
+     * @param array $parameter
+     */
+    protected function setProfileFormOptions(array $parameter)
+    {
+        if (!array_key_exists('profile_options', $parameter) || !array_key_exists('validation_groups', $parameter['registration_options'])) {
+            $this->profileFormOptions[$parameter['entity']] = array('validation_groups' => array('Profile', 'Default'));
+            return;
+        }
+        
+        $this->profileFormOptions[$parameter['entity']] = $parameter['registration_options'];
+    }
+
     /**
      *
      * @param array $entities
@@ -199,33 +236,35 @@ class UserDiscriminator
         $registrationFormTypes  = array();
         $profileFormTypes       = array();
         $userFactoriesTypes     = array();
+        $formsOptions           = array();
         
         foreach ($parameters['classes'] as $parameter) {
             
             array_walk($parameter, function($val, $key) use(&$parameter){
                 
                 if ($key == 'factory' && empty($val)) {
-                        $parameter[$key] = 'Nmn\MultiUserBundle\Manager\UserFactory';
+                    $parameter[$key] = 'Nmn\MultiUserBundle\Manager\UserFactory';
                 }
-                    
-                if (!empty($val)) {
+                                    
+                if (is_string($val) && !empty($val)) {
                     if (!class_exists($val)) {
                         throw new \LogicException(sprintf('Impossible build discriminator configuration: "%s" not found', $val));
                     }
                 }
             });
                         
-            $entities[]                                  = $parameter['entity'];
-            $registrationFormTypes[$parameter['entity']] = $parameter['registration'];
-            $profileFormTypes[$parameter['entity']]      = $parameter['profile'];
-            $userFactoriesTypes[$parameter['entity']]    = $parameter['factory'];
+            $entities[]                                         = $parameter['entity'];
+            $registrationFormTypes[$parameter['entity']]        = $parameter['registration'];            
+            $profileFormTypes[$parameter['entity']]             = $parameter['profile'];            
+            $userFactoriesTypes[$parameter['entity']]           = $parameter['factory'];        
+            
+            $this->setRegistrationFormOptions($parameter);
+            $this->setProfileFormOptions($parameter);
         }
         
-        $this->entities              = $entities;
-        $this->registrationFormTypes = $registrationFormTypes;
-        $this->profileFormTypes      = $profileFormTypes;
-        $this->userFactories         = $userFactoriesTypes;        
+        $this->entities                     = $entities;
+        $this->registrationFormTypes        = $registrationFormTypes;
+        $this->profileFormTypes             = $profileFormTypes;
+        $this->userFactories                = $userFactoriesTypes;            
     }
 }
-
-?>
