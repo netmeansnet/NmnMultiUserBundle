@@ -27,4 +27,20 @@ class RegistrationController extends BaseController
         
         return $return;
     }
+    
+    public function confirmAction($token)
+    {
+        $return = parent::confirmAction($token);
+        
+        if ($return instanceof RedirectResponse) {
+            $user = $this->container->get('security.context')->getToken()->getUser();            
+            if ( $user ) {
+                $dispatcher = $this->container->get('event_dispatcher');
+                $event = new ManualLoginEvent($user);
+                $dispatcher->dispatch('security.manual_login', $event);
+            }            
+        }
+        
+        return $return;
+    }
 }
