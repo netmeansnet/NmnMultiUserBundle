@@ -66,10 +66,7 @@ class UserDiscriminator
     public function onSecurityManualLogin(ManualLoginEvent $event)
     {
         $user = $event->getUser();
-        if (is_object($user)) {
-            $this->setClass(get_class($user), true);
-        }
-        
+        $this->setClass(get_class($user), true);
     }
     
     /**
