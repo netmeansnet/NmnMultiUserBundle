@@ -17,7 +17,7 @@ class ResettingController extends BaseController
         
         if ($return instanceof RedirectResponse) {
             $user = $this->container->get('security.context')->getToken()->getUser();            
-            if ( $user ) {
+            if (is_object($user) || $user instanceof UserInterface) {
                 $dispatcher = $this->container->get('event_dispatcher');
                 $event = new ManualLoginEvent($user);
                 $dispatcher->dispatch('security.manual_login', $event);

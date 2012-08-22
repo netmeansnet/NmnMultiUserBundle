@@ -5,6 +5,7 @@ namespace Nmn\MultiUserBundle\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use Nmn\MultiUserBundle\Event\ManualLoginEvent;
+use FOS\UserBundle\Model\UserInterface;
 
 class RegistrationController extends BaseController
 {
@@ -17,8 +18,8 @@ class RegistrationController extends BaseController
         $return = parent::registerAction();
         
         if ($return instanceof RedirectResponse) {
-            $user = $this->container->get('security.context')->getToken()->getUser();            
-            if ( is_object($user) ) {
+            $user = $this->container->get('security.context')->getToken()->getUser();       
+            if (is_object($user) || $user instanceof UserInterface) {
                 $dispatcher = $this->container->get('event_dispatcher');
                 $event = new ManualLoginEvent($user);
                 $dispatcher->dispatch('security.manual_login', $event);
@@ -34,7 +35,7 @@ class RegistrationController extends BaseController
         
         if ($return instanceof RedirectResponse) {
             $user = $this->container->get('security.context')->getToken()->getUser();            
-            if ( $user ) {
+            if (is_object($user) || $user instanceof UserInterface) {
                 $dispatcher = $this->container->get('event_dispatcher');
                 $event = new ManualLoginEvent($user);
                 $dispatcher->dispatch('security.manual_login', $event);
