@@ -18,7 +18,7 @@ class RegistrationController extends BaseController
         
         if ($return instanceof RedirectResponse) {
             $user = $this->container->get('security.context')->getToken()->getUser();            
-            if ( $user ) {
+            if ( is_object($user) ) {
                 $dispatcher = $this->container->get('event_dispatcher');
                 $event = new ManualLoginEvent($user);
                 $dispatcher->dispatch('security.manual_login', $event);
