@@ -1,33 +1,27 @@
 {
-    "name": "netmeansnet/multi-user-bundle",
+    "name": "pugx/multi-user-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony NmnMultiUserBundle",
+    "description": "Symfony PUGXMultiUserBundle",
     "keywords": ["user management, multi user management"],
     "homepage": "netmeans.net",
     "license": "MIT",
     "authors": [
         {
             "name": "Leonardo Proietti",
-            "email": "leonardo@netmeans.net"
-        },
-        {
-            "name": "Eugenio Pombi",
-            "email": "eugenio@netmeans.net"
+            "email": "leonardo.proietti@gmail.com"
         },
         {
             "name": "Community",
-            "homepage": "https://github.com/netmeansnet/NmnMultiUserBundle/contributors"
+            "homepage": "https://github.com/netmeansnet/PUGXMultiUserBundle/contributors"
         }
     ],
     "require": {
-        "php": ">=5.3.2",
-        "symfony/framework-bundle": "2.0.*",
-	"friendsofsymfony/user-bundle": "1.2"
+	"friendsofsymfony/user-bundle": "1.2.*"
     },
     "suggest": {
     },
     "autoload": {
-        "psr-0": { "Nmn\\MultiUserBundle": "" }
+        "psr-0": { "PUGX\\MultiUserBundle": "" }
     },
-    "target-dir": "Nmn/MultiUserBundle"
+    "target-dir": "PUGX/MultiUserBundle"
 }

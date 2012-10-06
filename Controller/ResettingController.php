@@ -1,10 +1,10 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Controller;
+namespace PUGX\MultiUserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\ResettingController as BaseController;
-use Nmn\MultiUserBundle\Event\ManualLoginEvent;
+use PUGX\MultiUserBundle\Event\ManualLoginEvent;
 
 class ResettingController extends BaseController
 {

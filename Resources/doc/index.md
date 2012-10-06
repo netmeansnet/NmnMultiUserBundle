@@ -1,7 +1,7 @@
-NmnMultiUserBundle Documentation
+PUGXMultiUserBundle Documentation
 ==================================
 
-NmnMultiUserBundle came by the need to use different types of users using only one fos_user service.
+PUGXMultiUserBundle came by the need to use different types of users using only one fos_user service.
 In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
 
 It's just a lazy way to use for free most of the functionality of FOSUserBundle.
@@ -17,35 +17,26 @@ The bundle is based on syfmony 2.0
 
 ## Installation
 
-1. Download NmnMultiUserBundle
+1. Download PUGXMultiUserBundle
 2. Configure the Autoloader
 3. Enable the Bundle
 4. Create your UserBundle
 5. Create your Entities
-6. Configure the FOSUserBundle (NmnMultiUserBundle params)
+6. Configure the FOSUserBundle (PUGXMultiUserBundle params)
 7. Configure parameters for UserDiscriminator
 8. Create your controllers
 
-### 1. Download NmnMultiUserBundle
+### 1. Download PUGXMultiUserBundle
 
 **Using the vendors script**
 
 Add the following lines in your `deps` file:
 
 ```
-[NmnMultiUserBundle]
-    git=git://github.com/netmeansnet/NmnMultiUserBundle.git
-    target=bundles/Nmn/MultiUserBundle
-```
-
-If you use FOSUserBundle 1.1:
-
-```
-[NmnMultiUserBundle]
-    git=git://github.com/netmeansnet/NmnMultiUserBundle.git
-    target=bundles/Nmn/MultiUserBundle
-    version=origin/1.1
-    
+[PUGXMultiUserBundle]
+    git=git://github.com/netmeansnet/PUGXMultiUserBundle.git
+    target=bundles/PUGX/MultiUserBundle
+    version=origin/1.2
 ```
 
 Now, run the vendors script to download the bundle:
@@ -56,7 +47,7 @@ $ php bin/vendors install
 
 ### 2. Configure the Autoloader
 
-Add the `Nmn` namespace to your autoloader:
+Add the `PUGX` namespace to your autoloader:
 
 ``` php
 <?php
@@ -64,7 +55,7 @@ Add the `Nmn` namespace to your autoloader:
 
 $loader->registerNamespaces(array(
     // ...
-    'Nmn' => __DIR__.'/../vendor/bundles',
+    'PUGX' => __DIR__.'/../vendor/bundles',
 ));
 ```
 
@@ -80,14 +71,14 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Nmn\MultiUserBundle\NmnMultiUserBundle(),
+        new PUGX\MultiUserBundle\PUGXMultiUserBundle(),
     );
 }
 ```
 
 ### 4. Create your UserBundle
 
-Create a bundle that extends NmnMultiUserBundle
+Create a bundle that extends PUGXMultiUserBundle
 ([How to use Bundle Inheritance to Override parts of a Bundle] (http://symfony.com/doc/current/cookbook/bundles/inheritance.html))
 
 ``` php
@@ -100,7 +91,7 @@ class AcmeUserBundle extends Bundle
 {
     public function getParent()
     {
-        return 'NmnMultiUserBundle';
+        return 'PUGXMultiUserBundle';
     }
 }
 ```
@@ -191,9 +182,9 @@ class UserTwo extends User
 You must also create forms for your entities:
 see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/1.1.0/Resources/doc/overriding_forms.md)
 
-### 6. Configure the FOSUserBundle (NmnMultiUserBundle params)
+### 6. Configure the FOSUserBundle (PUGXMultiUserBundle params)
 
-Keep in mind that NmnMultiUserBundle overwrites user_class via UserDiscriminator
+Keep in mind that PUGXMultiUserBundle overwrites user_class via UserDiscriminator
 but it does it only in controllers and forms handlers; in the other cases (command, sonata integration, etc)
 it still uses the user_class configured in the config.
 
@@ -204,13 +195,13 @@ fos_user:
     firewall_name: main
     user_class: Acme\UserBundle\Entity\User
     service:
-        user_manager: nmn_user_manager
+        user_manager: pugx_user_manager
     registration:
         form:
-            handler: nmn_user_registration_form_handler
+            handler: pugx_user_registration_form_handler
     profile:
         form:
-            handler: nmn_user_profile_form_handler
+            handler: pugx_user_profile_form_handler
 ```
 
 ### 7. Configure parameters for UserDiscriminator
@@ -219,7 +210,7 @@ fos_user:
 # Acme/UserBundle/Resources/config/config.yml
 
 parameters:
-  nmn_user_discriminator_parameters:
+  pugx_user_discriminator_parameters:
     classes:
         user_one:
             entity: Acme\UserBundle\Entity\UserOne
@@ -239,7 +230,7 @@ If you need to pass custom options to the form (like a validation groups)
 # Acme/UserBundle/Resources/config/config.yml
 
 parameters:
-  nmn_user_discriminator_parameters:
+  pugx_user_discriminator_parameters:
     classes:
         user_one:
             entity: Acme\UserBundle\Entity\UserOne
@@ -259,7 +250,7 @@ parameters:
 
 ### 8. Create your controllers
 
-Nmn\MultiUserBundle\Controller\RegistrationController can handle registration flow only for
+PUGX\MultiUserBundle\Controller\RegistrationController can handle registration flow only for
 the first user passed to discriminator, in this case user_one.
 To handle flow of user_two you must configure a route and add a controller in your bundle.
 
@@ -279,13 +270,13 @@ Controller
 
 namespace Acme\UserBundle\Controller;
 
-use Nmn\MultiUserBundle\Controller\RegistrationController as BaseController;
+use PUGX\MultiUserBundle\Controller\RegistrationController as BaseController;
 
 class RegistrationUserTwoController extends BaseController
 {
     public function registerAction()
     {
-        $discriminator = $this->container->get('nmn_user_discriminator');
+        $discriminator = $this->container->get('pugx_user_discriminator');
         $discriminator->setClass('Acme\UserBundle\Entity\UserTwo');
 
         return parent::registerAction();
@@ -300,14 +291,14 @@ class RegistrationUserTwoController extends BaseController
 
 namespace Acme\UserBundle\Controller;
 
-use Nmn\MultiUserBundle\Controller\RegistrationController as BaseController;
+use PUGX\MultiUserBundle\Controller\RegistrationController as BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RegistrationUserTwoController extends BaseController
 {
     public function registerAction()
     {
-        $discriminator = $this->container->get('nmn_user_discriminator');
+        $discriminator = $this->container->get('pugx_user_discriminator');
         $discriminator->setClass('Acme\UserBundle\Entity\UserTwo');
         $form = $discriminator->getRegistrationForm();
 
@@ -335,7 +326,7 @@ RegistrationController and create the route and the controller for UserOne
 
 namespace Acme\UserBundle\Controller;
 
-use Nmn\MultiUserBundle\Controller\RegistrationController as BaseController;
+use PUGX\MultiUserBundle\Controller\RegistrationController as BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RegistrationController extends BaseController

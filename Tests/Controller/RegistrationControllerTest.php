@@ -1,17 +1,17 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Tests\Unit\Controller;
+namespace PUGX\MultiUserBundle\Tests\Controller;
 
-use Nmn\MultiUserBundle\Tests\Unit\TestCase;
-use Nmn\MultiUserBundle\Controller\RegistrationController;
+use PUGX\MultiUserBundle\Tests\TestCase;
+use PUGX\MultiUserBundle\Controller\RegistrationController;
 
 class RegistrationControllerTest extends TestCase
 {
     public function setUp()
     {
         $this->container            = $this->getMockBuilder('Symfony\Component\DependencyInjection\Container')->disableOriginalConstructor()->getMock();
-        $this->userDiscriminator    = $this->getMockBuilder('Nmn\MultiUserBundle\Manager\UserDiscriminator')->disableOriginalConstructor()->getMock();
-        $this->formHandler          = $this->getMockBuilder('Nmn\MultiUserBundle\Form\Handler\RegistrationFormHandler')->disableOriginalConstructor()->getMock();
+        $this->userDiscriminator    = $this->getMockBuilder('PUGX\MultiUserBundle\Manager\UserDiscriminator')->disableOriginalConstructor()->getMock();
+        $this->formHandler          = $this->getMockBuilder('PUGX\MultiUserBundle\Form\Handler\RegistrationFormHandler')->disableOriginalConstructor()->getMock();
         $this->templating           = $this->getMock('TemplateEngine', array('renderResponse'));
         $this->form                 = $this->getMock('Form', array('createView'));
         $this->responseExpected     = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')->disableOriginalConstructor()->getMock();
@@ -23,7 +23,7 @@ class RegistrationControllerTest extends TestCase
         $controller->setContainer($this->container);
         
         $this->container->expects($this->exactly(4))->method('get')->with($this->logicalOr(
-                'nmn_user_discriminator',
+                'pugx_user_discriminator',
                 'fos_user.registration.form',
                 'fos_user.registration.form.handler',
                 'templating'))

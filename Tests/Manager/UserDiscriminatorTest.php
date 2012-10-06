@@ -1,12 +1,12 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Tests\Unit\Manager;
+namespace PUGX\MultiUserBundle\Tests\Manager;
 
-use Nmn\MultiUserBundle\Tests\Unit\TestCase;
-use Nmn\MultiUserBundle\Manager\UserDiscriminator;
-use Nmn\MultiUserBundle\Tests\Unit\Stub\UserRegistrationForm;
-use Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUserProfileForm;
-use Nmn\MultiUserBundle\Tests\Unit\Stub\User;
+use PUGX\MultiUserBundle\Tests\TestCase;
+use PUGX\MultiUserBundle\Manager\UserDiscriminator;
+use PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm;
+use PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm;
+use PUGX\MultiUserBundle\Tests\Stub\User;
 
 class UserDiscriminatorTest extends TestCase
 {
@@ -16,17 +16,17 @@ class UserDiscriminatorTest extends TestCase
         $this->container = $this->getMock('Symfony\Component\DependencyInjection\Container', array('get')); 
         
         $userParameters = array(
-            'entity' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\User',
-            'registration' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\UserRegistrationForm',
-            'profile' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\UserProfileForm',
+            'entity' => 'PUGX\MultiUserBundle\Tests\Stub\User',
+            'registration' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm',
+            'profile' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm',
             'factory' => ''
         );
 
         $anotherUserParameters = array(
-            'entity' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser',
-            'registration' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUserRegistrationForm',
-            'profile' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUserProfileForm',
-            'factory' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\CustomUserFactory'
+            'entity' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser',
+            'registration' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserRegistrationForm',
+            'profile' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm',
+            'factory' => 'PUGX\MultiUserBundle\Tests\Stub\CustomUserFactory'
         );
         
         $this->parameters = array('classes' => array('user' => $userParameters, 'anotherUser' => $anotherUserParameters));
@@ -48,7 +48,7 @@ class UserDiscriminatorTest extends TestCase
     public function testConstructor()
     {
         
-        $reflectionClass = new \ReflectionClass("Nmn\MultiUserBundle\Manager\UserDiscriminator");
+        $reflectionClass = new \ReflectionClass("PUGX\MultiUserBundle\Manager\UserDiscriminator");
 
         $entities               = $reflectionClass->getProperty('entities');
         $registrationFormTypes  = $reflectionClass->getProperty('registrationFormTypes');
@@ -60,10 +60,10 @@ class UserDiscriminatorTest extends TestCase
         $profileFormTypes->setAccessible(true);
         $userFactories->setAccessible(true);
         
-        $entitiesExpected           = array('Nmn\MultiUserBundle\Tests\Unit\Stub\User', 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser');
-        $registrationFormsExpected  = array('Nmn\MultiUserBundle\Tests\Unit\Stub\User' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\UserRegistrationForm', 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUserRegistrationForm');
-        $profileFormsExpected       = array('Nmn\MultiUserBundle\Tests\Unit\Stub\User' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\UserProfileForm', 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUserProfileForm');
-        $userFactoriesExpected      = array('Nmn\MultiUserBundle\Tests\Unit\Stub\User' => 'Nmn\MultiUserBundle\Manager\UserFactory', 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\CustomUserFactory');
+        $entitiesExpected           = array('PUGX\MultiUserBundle\Tests\Stub\User', 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser');
+        $registrationFormsExpected  = array('PUGX\MultiUserBundle\Tests\Stub\User' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm', 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserRegistrationForm');
+        $profileFormsExpected       = array('PUGX\MultiUserBundle\Tests\Stub\User' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm', 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm');
+        $userFactoriesExpected      = array('PUGX\MultiUserBundle\Tests\Stub\User' => 'PUGX\MultiUserBundle\Manager\UserFactory', 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser' => 'PUGX\MultiUserBundle\Tests\Stub\CustomUserFactory');
         
         $this->assertEquals($entitiesExpected, $entities->getValue($this->discriminator));
         $this->assertEquals($registrationFormsExpected, $registrationFormTypes->getValue($this->discriminator));
@@ -92,7 +92,7 @@ class UserDiscriminatorTest extends TestCase
      */
     public function testGetClasses() 
     {
-        $this->assertEquals(array('Nmn\MultiUserBundle\Tests\Unit\Stub\User', 'Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser'), $this->discriminator->getClasses());
+        $this->assertEquals(array('PUGX\MultiUserBundle\Tests\Stub\User', 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser'), $this->discriminator->getClasses());
     }
     
     /**
@@ -109,14 +109,14 @@ class UserDiscriminatorTest extends TestCase
     public function testSetClassPersist() 
     {        
         $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
-        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'Nmn\MultiUserBundle\Tests\Unit\Stub\User');        
-        $this->discriminator->setClass('Nmn\MultiUserBundle\Tests\Unit\Stub\User', true);
+        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'PUGX\MultiUserBundle\Tests\Stub\User');        
+        $this->discriminator->setClass('PUGX\MultiUserBundle\Tests\Stub\User', true);
     }
     
     public function testGetClass() 
     {  
-        $this->discriminator->setClass('Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser');        
-        $this->assertEquals('Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser', $this->discriminator->getClass());
+        $this->discriminator->setClass('PUGX\MultiUserBundle\Tests\Stub\AnotherUser');        
+        $this->assertEquals('PUGX\MultiUserBundle\Tests\Stub\AnotherUser', $this->discriminator->getClass());
     }
     
     public function testGetClassDefault() 
@@ -124,20 +124,20 @@ class UserDiscriminatorTest extends TestCase
         $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
         $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls(null));
         
-        $this->assertEquals('Nmn\MultiUserBundle\Tests\Unit\Stub\User', $this->discriminator->getClass());
+        $this->assertEquals('PUGX\MultiUserBundle\Tests\Stub\User', $this->discriminator->getClass());
     }
     
     public function testGetClassStored() 
     {
         $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
-        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser'));
+        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('PUGX\MultiUserBundle\Tests\Stub\AnotherUser'));
         
-        $this->assertEquals('Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser', $this->discriminator->getClass());
+        $this->assertEquals('PUGX\MultiUserBundle\Tests\Stub\AnotherUser', $this->discriminator->getClass());
     }
     
     public function testCreateUser()
     {                
-        $this->discriminator->setClass('Nmn\MultiUserBundle\Tests\Unit\Stub\User');
+        $this->discriminator->setClass('PUGX\MultiUserBundle\Tests\Stub\User');
         $this->discriminator->createUser();
     }
     
@@ -161,7 +161,7 @@ class UserDiscriminatorTest extends TestCase
         $type = new AnotherUserProfileForm;
         $formFactory    = $this->getMock('FormFactory', array('createNamed'));
         
-        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('Nmn\MultiUserBundle\Tests\Unit\Stub\AnotherUser'));
+        $this->session->expects($this->exactly(1))->method('get')->with(UserDiscriminator::SESSION_NAME, null)->will($this->onConsecutiveCalls('PUGX\MultiUserBundle\Tests\Stub\AnotherUser'));
              
         $this->container->expects($this->exactly(2))->method('get')->with($this->logicalOr(
                 'session',
@@ -178,7 +178,7 @@ class UserDiscriminatorTest extends TestCase
         $this->token->expects($this->once())->method('getUser')->will($this->returnValue($this->user));
         
         $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
-        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'Nmn\MultiUserBundle\Tests\Unit\Stub\User');
+        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'PUGX\MultiUserBundle\Tests\Stub\User');
         
         $this->discriminator->onSecurityInteractiveLogin($this->event);
         $this->assertEquals(get_class($this->user), $this->discriminator->getClass());        
@@ -186,11 +186,11 @@ class UserDiscriminatorTest extends TestCase
     
     public function testOnSecurityManualLogin()
     {
-        $this->eventManualLogin = $this->getMockBuilder('Nmn\MultiUserBundle\Event\ManualLoginEvent')->disableOriginalConstructor()->getMock();
+        $this->eventManualLogin = $this->getMockBuilder('PUGX\MultiUserBundle\Event\ManualLoginEvent')->disableOriginalConstructor()->getMock();
         $this->eventManualLogin->expects($this->once())->method('getUser')->will($this->returnValue($this->user));
         
         $this->container->expects($this->exactly(1))->method('get')->with('session')->will($this->onConsecutiveCalls($this->session));
-        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'Nmn\MultiUserBundle\Tests\Unit\Stub\User');
+        $this->session->expects($this->exactly(1))->method('set')->with(UserDiscriminator::SESSION_NAME, 'PUGX\MultiUserBundle\Tests\Stub\User');
         
         $this->discriminator->onSecurityManualLogin($this->eventManualLogin);
         $this->assertEquals(get_class($this->user), $this->discriminator->getClass());

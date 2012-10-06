@@ -1,9 +1,9 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Tests\Unit\Manager;
+namespace PUGX\MultiUserBundle\Tests\Manager;
 
-use Nmn\MultiUserBundle\Tests\Unit\TestCase;
-use Nmn\MultiUserBundle\Manager\OrmUserManager as UserManager;
+use PUGX\MultiUserBundle\Tests\TestCase;
+use PUGX\MultiUserBundle\Manager\OrmUserManager as UserManager;
 
 class OrmUserManagerTest extends TestCase
 {
@@ -13,9 +13,9 @@ class OrmUserManagerTest extends TestCase
         $this->repo      = $this->getMock('Repo', array('findOneBy', 'findAll', 'findBy')); 
         
         $userParameters = array(
-            'entity' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\User',
-            'registration' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\UserRegistrationForm',
-            'profile' => 'Nmn\MultiUserBundle\Tests\Unit\Stub\UserProfileForm',
+            'entity' => 'PUGX\MultiUserBundle\Tests\Stub\User',
+            'registration' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm',
+            'profile' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm',
             'factory' => ''
         );        
         $this->parameters = array('classes' => array('user' => $userParameters));
@@ -25,7 +25,7 @@ class OrmUserManagerTest extends TestCase
         $this->emailCanonicalizer       = $this->getMock('FOS\UserBundle\Util\Canonicalizer', array()); 
         $this->em                       = $this->getEm($this->repo); 
         $this->class                    = 'User'; 
-        $this->userDiscriminator        = $this->getMock('Nmn\MultiUserBundle\Manager\UserDiscriminator', array('createUser', 'getClass', 'getClasses', 'setClass'), array($this->container, $this->parameters)); 
+        $this->userDiscriminator        = $this->getMock('PUGX\MultiUserBundle\Manager\UserDiscriminator', array('createUser', 'getClass', 'getClasses', 'setClass'), array($this->container, $this->parameters)); 
         
         $this->userManager = new UserManager($this->encoderFactory, $this->usernameCanonicalizer, $this->emailCanonicalizer, $this->em, $this->class, $this->userDiscriminator);
     }
@@ -49,7 +49,7 @@ class OrmUserManagerTest extends TestCase
         
     public function testFindUserBy()
     {                
-        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('Nmn\MultiUserBundle\Tests\Unit\Stub\User')));
+        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('PUGX\MultiUserBundle\Tests\Stub\User')));
         $this->em->expects($this->exactly(1))->method('getRepository');
         $this->repo->expects($this->exactly(1))->method('findOneBy')->with(array('criteria' => 'dummy'))->will($this->onConsecutiveCalls(true));        
                 
@@ -63,7 +63,7 @@ class OrmUserManagerTest extends TestCase
     {                
         $em = $this->getEm(); 
         $this->userManager = new UserManager($this->encoderFactory, $this->usernameCanonicalizer, $this->emailCanonicalizer, $em, $this->class, $this->userDiscriminator);
-        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('Nmn\MultiUserBundle\Tests\Unit\Stub\User')));
+        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('PUGX\MultiUserBundle\Tests\Stub\User')));
         $em->expects($this->exactly(1))->method('getRepository');   
         $this->repo->expects($this->exactly(0))->method('findOneBy');        
         $this->userDiscriminator->expects($this->exactly(0))->method('setClass');
@@ -73,7 +73,7 @@ class OrmUserManagerTest extends TestCase
     
     public function testFindUserByUserNotFound()
     {                
-        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('Nmn\MultiUserBundle\Tests\Unit\Stub\User')));
+        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('PUGX\MultiUserBundle\Tests\Stub\User')));
         $this->em->expects($this->exactly(1))->method('getRepository');
         $this->repo->expects($this->exactly(1))->method('findOneBy')->with(array('criteria' => 'dummy'))->will($this->onConsecutiveCalls(null));        
         $this->userDiscriminator->expects($this->exactly(0))->method('setClass');
@@ -85,8 +85,8 @@ class OrmUserManagerTest extends TestCase
     
     public function testFindUsers()
     {                
-        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('Nmn\MultiUserBundle\Tests\Unit\Stub\User')));
-        $this->em->expects($this->exactly(1))->method('getRepository')->with('Nmn\MultiUserBundle\Tests\Unit\Stub\User');
+        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('PUGX\MultiUserBundle\Tests\Stub\User')));
+        $this->em->expects($this->exactly(1))->method('getRepository')->with('PUGX\MultiUserBundle\Tests\Stub\User');
         $this->repo->expects($this->exactly(1))->method('findAll')->will($this->onConsecutiveCalls(array()));        
                 
         $this->userManager->findUsers();

@@ -1,16 +1,16 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Controller;
+namespace PUGX\MultiUserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
-use Nmn\MultiUserBundle\Event\ManualLoginEvent;
+use PUGX\MultiUserBundle\Event\ManualLoginEvent;
 
 class RegistrationController extends BaseController
 {
     public function registerAction()
     {
-        $discriminator = $this->container->get('nmn_user_discriminator');
+        $discriminator = $this->container->get('pugx_user_discriminator');
         $form = $discriminator->getRegistrationForm();
         $this->container->set('fos_user.registration.form', $form);
         

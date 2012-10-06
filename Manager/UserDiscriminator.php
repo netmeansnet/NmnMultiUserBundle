@@ -1,21 +1,21 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Manager;
+namespace PUGX\MultiUserBundle\Manager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use FOS\UserBundle\Model\UserInterface;
-use Nmn\MultiUserBundle\Event\ManualLoginEvent;
+use PUGX\MultiUserBundle\Event\ManualLoginEvent;
 
 /**
  * Description of UserDiscriminator
  * 
- * @author leonardo proietti (leonardo@netmeans.net)
+ * @author leonardo proietti (leonardo.proietti@gmail.com)
  * @author eux (eugenio@netmeans.net)
  */
 class UserDiscriminator
 {
-    const SESSION_NAME = 'nmn_user.user_discriminator.class'; 
+    const SESSION_NAME = 'pugx_user.user_discriminator.class'; 
     
     protected $serviceContainer;
     
@@ -243,7 +243,7 @@ class UserDiscriminator
             array_walk($parameter, function($val, $key) use(&$parameter){
                 
                 if ($key == 'factory' && empty($val)) {
-                    $parameter[$key] = 'Nmn\MultiUserBundle\Manager\UserFactory';
+                    $parameter[$key] = 'PUGX\MultiUserBundle\Manager\UserFactory';
                 }
                                     
                 if (is_string($val) && !empty($val)) {
