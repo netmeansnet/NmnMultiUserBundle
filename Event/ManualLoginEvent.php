@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Event;
+namespace PUGX\MultiUserBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 

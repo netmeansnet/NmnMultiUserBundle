@@ -1,8 +1,8 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Tests\Unit\Stub;
+namespace PUGX\MultiUserBundle\Tests\Stub;
 
-class AnotherUserProfileForm
+class UserRegistrationForm
 {
     public function getName()
     {

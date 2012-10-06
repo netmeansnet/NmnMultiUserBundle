@@ -1,16 +1,16 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Tests\Unit\Controller;
+namespace PUGX\MultiUserBundle\Tests\Controller;
 
-use Nmn\MultiUserBundle\Tests\Unit\TestCase;
-use Nmn\MultiUserBundle\Controller\ProfileController;
+use PUGX\MultiUserBundle\Tests\TestCase;
+use PUGX\MultiUserBundle\Controller\ProfileController;
 
 class ProfileControllerTest extends TestCase
 {
     public function setUp()
     {
         $this->container            = $this->getMockBuilder('Symfony\Component\DependencyInjection\Container')->disableOriginalConstructor()->getMock();
-        $this->userDiscriminator    = $this->getMockBuilder('Nmn\MultiUserBundle\Manager\UserDiscriminator')->disableOriginalConstructor()->getMock();
+        $this->userDiscriminator    = $this->getMockBuilder('PUGX\MultiUserBundle\Manager\UserDiscriminator')->disableOriginalConstructor()->getMock();
         $this->securityContext      = $this->getMock('SecurityContext', array('getToken'));
         $this->token                = $this->getMock('Token', array('getUser'));
     }
@@ -24,7 +24,7 @@ class ProfileControllerTest extends TestCase
         $controller->setContainer($this->container);
         
         $this->container->expects($this->exactly(2))->method('get')->with($this->logicalOr(
-                'nmn_user_discriminator',
+                'pugx_user_discriminator',
                 'security.context'))
                 ->will($this->onConsecutiveCalls($this->userDiscriminator, $this->securityContext));         
         

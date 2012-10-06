@@ -1,11 +1,11 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Manager;
+namespace PUGX\MultiUserBundle\Manager;
 
 /**
  * Description of UserFactory
  * 
- * @author leonardo proietti (leonardo@netmeans.net)
+ * @author leonardo proietti (leonardo.proietti@gmail.com)
  */
 class UserFactory
 {

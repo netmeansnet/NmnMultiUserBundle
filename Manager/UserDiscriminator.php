@@ -1,29 +1,29 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Manager;
+namespace PUGX\MultiUserBundle\Manager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use FOS\UserBundle\Model\UserInterface;
-use Nmn\MultiUserBundle\Event\ManualLoginEvent;
+use PUGX\MultiUserBundle\Event\ManualLoginEvent;
 
 /**
  * Description of UserDiscriminator
  * 
- * @author leonardo proietti (leonardo@netmeans.net)
+ * @author leonardo proietti (leonardo.proietti@gmail.com)
  * @author eux (eugenio@netmeans.net)
  */
 class UserDiscriminator
 {
-    const SESSION_NAME = 'nmn_user.user_discriminator.class'; 
+    const SESSION_NAME = 'pugx_user.user_discriminator.class'; 
     
     protected $serviceContainer;
     
     protected $entities;
     
-    protected $registrationFormTypes;
+    protected $registrationFormTypes;   
     
-    protected $profileFormTypes;
+    protected $profileFormTypes;   
     
     protected $userFactories;
     
@@ -36,7 +36,7 @@ class UserDiscriminator
     protected $registrationFormOptions = array();
     
     protected $profileFormOptions = array();
-    
+
     /**
      *
      * @param ContainerInterface $serviceContainer 
@@ -45,7 +45,7 @@ class UserDiscriminator
     {
         $this->serviceContainer = $serviceContainer;
         
-        $config = $this->buildConfig($parameters);
+        $this->buildConfig($parameters);
     }
     
     
@@ -60,7 +60,6 @@ class UserDiscriminator
     }
     
     /**
-     *
      * @param ManualLoginEvent $event 
      */
     public function onSecurityManualLogin(ManualLoginEvent $event)
@@ -68,7 +67,7 @@ class UserDiscriminator
         $user = $event->getUser();
         $this->setClass(get_class($user), true);
     }
-    
+
     /**
      *
      * @return array 
@@ -140,10 +139,11 @@ class UserDiscriminator
      * @return \Symfony\Component\Form\Form 
      */
     public function getRegistrationForm()
-    {           
+    {                   
         if (is_null($this->registrationForm)) {
             $formFactory            = $this->serviceContainer->get('form.factory');
             $type                   = $this->getRegistrationFormType($this->getClass());
+
             $this->registrationForm = $formFactory->createNamed($type->getName(), $type, null, $this->registrationFormOptions[$this->getClass()]);
         }
 
@@ -159,6 +159,7 @@ class UserDiscriminator
         if (is_null($this->profileForm)) {
             $formFactory        = $this->serviceContainer->get('form.factory');
             $type               = $this->getProfileFormType($this->getClass());
+            
             $this->profileForm  = $formFactory->createNamed($type->getName(), $type, null, $this->profileFormOptions[$this->getClass()]);
         }
                 
@@ -190,7 +191,7 @@ class UserDiscriminator
                         
         return $type;
     }
-    
+
     /**
      * This function is needed due a bad bundle architecture.
      * I would have had to use a MultiUser configuration with default values
@@ -219,10 +220,10 @@ class UserDiscriminator
             $this->profileFormOptions[$parameter['entity']] = array('validation_groups' => array('Profile', 'Default'));
             return;
         }
-        
         $this->profileFormOptions[$parameter['entity']] = $parameter['profile_options'];
     }
-        
+
+
     /**
      *
      * @param array $entities
@@ -235,15 +236,15 @@ class UserDiscriminator
         $registrationFormTypes  = array();
         $profileFormTypes       = array();
         $userFactoriesTypes     = array();
+        $formsOptions           = array();
         
         foreach ($parameters['classes'] as $parameter) {
             
             array_walk($parameter, function($val, $key) use(&$parameter){
                 
                 if ($key == 'factory' && empty($val)) {
-                        $parameter[$key] = 'Nmn\MultiUserBundle\Manager\UserFactory';
+                    $parameter[$key] = 'PUGX\MultiUserBundle\Manager\UserFactory';
                 }
-                    
                 if (is_string($val) && !empty($val)) {
                     if (!class_exists($val)) {
                         throw new \LogicException(sprintf('Impossible build discriminator configuration: "%s" not found', $val));
@@ -260,11 +261,9 @@ class UserDiscriminator
             $this->setProfileFormOptions($parameter);
         }
         
-        $this->entities              = $entities;
-        $this->registrationFormTypes = $registrationFormTypes;
-        $this->profileFormTypes      = $profileFormTypes;
-        $this->userFactories         = $userFactoriesTypes;        
+        $this->entities                     = $entities;
+        $this->registrationFormTypes        = $registrationFormTypes;
+        $this->profileFormTypes             = $profileFormTypes;
+        $this->userFactories                = $userFactoriesTypes;            
     }
 }
-
-?>

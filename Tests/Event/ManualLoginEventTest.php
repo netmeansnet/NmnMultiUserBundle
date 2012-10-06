@@ -1,10 +1,10 @@
 <?php
 
-namespace Edimotive\StatsBundle\Tests\Unit\Event;
+namespace Edimotive\StatsBundle\Tests\Event;
 
-use Nmn\MultiUserBundle\Tests\Unit\TestCase;
-use Nmn\MultiUserBundle\Event\ManualLoginEvent;
-use Nmn\MultiUserBundle\Tests\Unit\Stub\User;
+use PUGX\MultiUserBundle\Tests\TestCase;
+use PUGX\MultiUserBundle\Event\ManualLoginEvent;
+use PUGX\MultiUserBundle\Tests\Stub\User;
 
 class ManualLoginEventTest extends TestCase
 {
@@ -12,7 +12,7 @@ class ManualLoginEventTest extends TestCase
     
     public function setUp()
     {
-        $this->user = new User();       
+        $this->user = new User();
         $this->event = new ManualLoginEvent($this->user);
     }
     

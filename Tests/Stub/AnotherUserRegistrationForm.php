@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Tests\Unit\Stub;
+namespace PUGX\MultiUserBundle\Tests\Stub;
 
 class AnotherUserRegistrationForm
 {
