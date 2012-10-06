@@ -6,17 +6,17 @@ For now only supports the ORM db driver and is based on the doctrine2 inheritanc
 
 This branch (1.3) supports FOSUserBundle 1.3 and Symfony 2.1
 
-[![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=master)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
+[![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=1.3)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
 
 Documentation
 -------------
 
-[Read the Documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/master/Resources/doc/index.md)
+[Read the Documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/1.3/Resources/doc/index.md)
 
 Installation
 ------------
 
-All the installation instructions are located in [documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/master/Resources/doc/index.md).
+All the installation instructions are located in [documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/1.3/Resources/doc/index.md).
 
 License
 -------
