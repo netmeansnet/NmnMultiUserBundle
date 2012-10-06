@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\MultiUserBundle\DependencyInjection;
+namespace PUGX\MultiUserBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('nmn_user');
+        $rootNode = $treeBuilder->root('pugx_user');
 
         $supportedDrivers = array('orm');
         

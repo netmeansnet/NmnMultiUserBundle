@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Form\Handler;
+namespace PUGX\MultiUserBundle\Form\Handler;
 
 use FOS\UserBundle\Form\Handler\ProfileFormHandler as BaseProfileFormHandler;
 
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Mailer\MailerInterface;
-use Nmn\MultiUserBundle\Manager\UserDiscriminator;
+use PUGX\MultiUserBundle\Manager\UserDiscriminator;
 use Symfony\Component\Form\FormInterface;
 
 class ProfileFormHandler extends BaseProfileFormHandler

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nmn\MultiUserBundle\Manager;
+namespace PUGX\MultiUserBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
@@ -8,12 +8,12 @@ use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
-use Nmn\MultiUserBundle\Manager\UserDiscriminator;
+use PUGX\MultiUserBundle\Manager\UserDiscriminator;
 
 /**
  * Custom user manager for FOSUserBundle
  *
- * @author leonardo proietti (leonardo@netmeans.net)
+ * @author leonardo proietti (leonardo.proietti@gmail.com)
  * @author eux (eugenio@netmeans.net)
  */
 class OrmUserManager extends BaseUserManager

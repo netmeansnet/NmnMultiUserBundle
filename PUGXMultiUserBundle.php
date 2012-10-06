@@ -1,10 +1,10 @@
 <?php
 
-namespace Nmn\MultiUserBundle;
+namespace PUGX\MultiUserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class NmnMultiUserBundle extends Bundle
+class PUGXMultiUserBundle extends Bundle
 {
     public function getParent()
     {
