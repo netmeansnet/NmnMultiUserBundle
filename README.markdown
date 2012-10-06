@@ -11,12 +11,12 @@ This branch (master) supports FOSUserBundle 1.3 and Symfony 2.1
 Documentation
 -------------
 
-[Read the Documentation](https://github.com/netmeansnet/PUGXMultiUserBundle/blob/master/Resources/doc/index.md)
+[Read the Documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/master/Resources/doc/index.md)
 
 Installation
 ------------
 
-All the installation instructions are located in [documentation](https://github.com/netmeansnet/PUGXMultiUserBundle/blob/master/Resources/doc/index.md).
+All the installation instructions are located in [documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/master/Resources/doc/index.md).
 
 License
 -------
@@ -28,13 +28,13 @@ This bundle is under the MIT license. See the complete license in the bundle:
 About
 -----
 
-PUGXMultiUserBundle is a [netmeansnet](https://github.com/netmeansnet) initiative.
+PUGXMultiUserBundle is a [PUGX](https://github.com/PUGX) initiative.
 
 
 Reporting an issue or a feature request
 ---------------------------------------
 
-Issues and feature requests are tracked in the [Github issue tracker](https://github.com/netmeansnet/PUGXMultiUserBundle/issues).
+Issues and feature requests are tracked in the [Github issue tracker](https://github.com/PUGX/PUGXMultiUserBundle/issues).
 
 When reporting a bug, it may be a good idea to reproduce it in a basic project
 built using the [Symfony Standard Edition](https://github.com/symfony/symfony-standard)
