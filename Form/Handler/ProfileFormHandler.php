@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Mailer\MailerInterface;
-use PUGX\MultiUserBundle\Manager\UserDiscriminator;
+use PUGX\MultiUserBundle\Model\UserDiscriminator;
 use Symfony\Component\Form\FormInterface;
 
 class ProfileFormHandler extends BaseProfileFormHandler
@@ -18,9 +18,7 @@ class ProfileFormHandler extends BaseProfileFormHandler
 
     public function __construct(FormInterface $form, Request $request, UserManagerInterface $userManager, UserDiscriminator $userDiscriminator)
     {
-        $this->userDiscriminator = $userDiscriminator;
-        $form = $userDiscriminator->getProfileForm();
-                
+        $form = $userDiscriminator->getProfileForm();                
         parent::__construct($form, $request, $userManager);
     }
     

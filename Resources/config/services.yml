@@ -1,26 +1,50 @@
 services:
     
+    pugx_multi_user.controller.factory:
+        class: PUGX\MultiUserBundle\Controller\ControllerAwareFactory
+        arguments: ["@service_container"]
+        
+    pugx_multi_user.controller.handler:
+        class: PUGX\MultiUserBundle\Controller\ControllerHandler
+        arguments: ["@pugx_user.manager.user_discriminator", "@security.context", "@event_dispatcher", "@pugx_multi_user.controller.factory"]
+        
     # custom fosuser registration form handler
     pugx_user.form.handler.registration:
         class: PUGX\MultiUserBundle\Form\Handler\RegistrationFormHandler
         arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer", "@fos_user.util.token_generator.default", "@pugx_user.manager.user_discriminator"]
         scope: request
-        public: false
     
     # custom fosuser profile form handler
     pugx_user.form.handler.profile:
         class: PUGX\MultiUserBundle\Form\Handler\ProfileFormHandler
         arguments: ["@fos_user.profile.form", "@request", "@fos_user.user_manager", "@pugx_user.manager.user_discriminator"]
         scope: request
-        public: false
     
     # class to discriminate users types
     pugx_user.manager.user_discriminator:
-        class:     PUGX\MultiUserBundle\Manager\UserDiscriminator
-        arguments: ["@service_container", %pugx_user_discriminator_parameters%]
-        tags:
+        class:     PUGX\MultiUserBundle\Model\UserDiscriminator
+        arguments: ["@session", "@form.factory", %pugx_user_discriminator_parameters%]
+        
+            
+    pugx_multi_user.listener.security:
+      class:     PUGX\MultiUserBundle\Listener\SecurityListener
+      arguments: ["@pugx_user.manager.user_discriminator"]
+      tags:
             - { name: kernel.event_listener, event: security.interactive_login }
             - { name: kernel.event_listener, event: security.manual_login }
+            
+    pugx_multi_user.listener.controller:
+      class:     PUGX\MultiUserBundle\Listener\ControllerHandlerListener
+      arguments: ["@pugx_multi_user.controller.handler"]
+      tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+            - { name: kernel.event_listener, event: kernel.response }
+            
+    pugx_multi_user.listener.container_setter:
+      class:     PUGX\MultiUserBundle\Listener\ContainerSetterListener
+      arguments: ["@service_container"]
+      tags:
+            - { name: kernel.event_listener, event: pugx_multi_user.change_container_value, method: set }
                 
     # alias
     pugx_user_registration_form_handler:

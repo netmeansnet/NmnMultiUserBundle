@@ -1,12 +1,11 @@
 <?php
 
-namespace Edimotive\StatsBundle\Tests\Event;
+namespace PUGX\MultiUserBundle\Tests\Event;
 
-use PUGX\MultiUserBundle\Tests\TestCase;
 use PUGX\MultiUserBundle\Event\ManualLoginEvent;
 use PUGX\MultiUserBundle\Tests\Stub\User;
 
-class ManualLoginEventTest extends TestCase
+class ManualLoginEventTest extends \PHPUnit_Framework_TestCase
 {
     public $user;
     

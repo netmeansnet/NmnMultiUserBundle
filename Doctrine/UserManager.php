@@ -1,6 +1,6 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Manager;
+namespace PUGX\MultiUserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
@@ -8,7 +8,7 @@ use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
-use PUGX\MultiUserBundle\Manager\UserDiscriminator;
+use PUGX\MultiUserBundle\Model\UserDiscriminator;
 
 /**
  * Custom user manager for FOSUserBundle
@@ -16,10 +16,18 @@ use PUGX\MultiUserBundle\Manager\UserDiscriminator;
  * @author leonardo proietti (leonardo.proietti@gmail.com)
  * @author eux (eugenio@netmeans.net)
  */
-class OrmUserManager extends BaseUserManager
-{
-    protected $em;
-    protected $class;    
+class UserManager extends BaseUserManager
+{ 
+    /**
+     *
+     * @var ObjectManager 
+     */
+    protected $om;
+        
+    /**
+     *
+     * @var UserDiscriminator 
+     */
     protected $userDiscriminator;
 
     /**
@@ -28,8 +36,9 @@ class OrmUserManager extends BaseUserManager
      * @param EncoderFactoryInterface $encoderFactory
      * @param CanonicalizerInterface  $usernameCanonicalizer
      * @param CanonicalizerInterface  $emailCanonicalizer
-     * @param EntityManager           $om
+     * @param ObjectManager           $om
      * @param string                  $class
+     * @param UserDiscriminator       $userDiscriminator
      */
     public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, UserDiscriminator $userDiscriminator)
     {
@@ -39,6 +48,10 @@ class OrmUserManager extends BaseUserManager
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
     }
     
+    /**
+     *
+     * {@inheritDoc}
+     */
     public function createUser()
     {
         return $this->userDiscriminator->createUser();
@@ -100,11 +113,7 @@ class OrmUserManager extends BaseUserManager
 
 
     /**
-     * Gets conflictual users for the given user and constraint.
-     *
-     * @param UserInterface $value
-     * @param array         $fields
-     * @return array
+     * {@inheritDoc}
      */
     protected function findConflictualUsers($value, array $fields)
     {
@@ -116,8 +125,7 @@ class OrmUserManager extends BaseUserManager
                         
             $users = $repo->findBy($this->getCriteria($value, $fields));
             
-            if (count($users) > 0) {
-                
+            if (count($users) > 0) {                
                 return $users;
             }
         }

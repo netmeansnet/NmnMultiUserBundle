@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Mailer\MailerInterface;
-use PUGX\MultiUserBundle\Manager\UserDiscriminator;
+use PUGX\MultiUserBundle\Model\UserDiscriminator;
 use FOS\UserBundle\Util\TokenGeneratorInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -19,9 +19,7 @@ class RegistrationFormHandler extends BaseRegistrationFormHandler
 
     public function __construct(FormInterface $form, Request $request, UserManagerInterface $userManager, MailerInterface $mailer, TokenGeneratorInterface $tokenGenerator, UserDiscriminator $userDiscriminator)
     {
-        $this->userDiscriminator = $userDiscriminator;
-        $form = $userDiscriminator->getRegistrationForm();
-        
+        $form = $userDiscriminator->getRegistrationForm();        
         parent::__construct($form, $request, $userManager, $mailer, $tokenGenerator);
     }    
 }

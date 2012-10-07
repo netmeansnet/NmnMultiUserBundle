@@ -1,11 +1,10 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Manager;
+namespace PUGX\MultiUserBundle\Model;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use FOS\UserBundle\Model\UserInterface;
-use PUGX\MultiUserBundle\Event\ManualLoginEvent;
 
 /**
  * Description of UserDiscriminator
@@ -17,57 +16,86 @@ class UserDiscriminator
 {
     const SESSION_NAME = 'pugx_user.user_discriminator.class'; 
     
-    protected $serviceContainer;
+    /**
+     *
+     * @var SessionInterface 
+     */
+    protected $session;
     
+    /**
+     *
+     * @var FormFactoryInterface 
+     */
+    protected $formFactory;
+    
+    /**
+     *
+     * @var array 
+     */
     protected $entities;
     
+    /**
+     *
+     * @var array 
+     */
     protected $registrationFormTypes;   
     
+    /**
+     *
+     * @var array 
+     */
     protected $profileFormTypes;   
     
+    /**
+     *
+     * @var array 
+     */
     protected $userFactories;
     
+    /**
+     *
+     * @var Symfony\Component\Form\Form 
+     */
     protected $registrationForm = null;
     
+    /**
+     *
+     * @var Symfony\Component\Form\Form 
+     */
     protected $profileForm = null;
     
+    /**
+     *
+     * @var string 
+     */
     protected $class = null;
     
+    /**
+     *
+     * @var array 
+     */
     protected $registrationFormOptions = array();
     
+    /**
+     *
+     * @var array 
+     */
     protected $profileFormOptions = array();
 
     /**
      *
-     * @param ContainerInterface $serviceContainer 
+     * @param SessionInterface $session
+     * @param FormFactoryInterface $formFactory
+     * @param array $parameters 
      */
-    public function __construct(ContainerInterface $serviceContainer, array $parameters)
+    public function __construct(SessionInterface $session, FormFactoryInterface $formFactory, array $parameters)
     {
-        $this->serviceContainer = $serviceContainer;
+        $this->session = $session;
+        $this->formFactory = $formFactory;
         
         $this->buildConfig($parameters);
     }
     
-    
-    /**
-     *
-     * @param InteractiveLoginEvent $event 
-     */
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
-    {
-        $user = $event->getAuthenticationToken()->getUser();
-        $this->setClass(get_class($user), true);
-    }
-    
-    /**
-     * @param ManualLoginEvent $event 
-     */
-    public function onSecurityManualLogin(ManualLoginEvent $event)
-    {
-        $user = $event->getUser();
-        $this->setClass(get_class($user), true);
-    }
-
     /**
      *
      * @return array 
@@ -76,8 +104,7 @@ class UserDiscriminator
     {        
         return $this->entities;
     }
-    
-    
+        
     /**
      *
      * @param string $class 
@@ -89,8 +116,7 @@ class UserDiscriminator
         }
         
         if ($persist) {
-            $session = $this->serviceContainer->get('session');
-            $session->set(static::SESSION_NAME, $class);
+            $this->session->set(static::SESSION_NAME, $class);
         }
         
         $this->class = $class;
@@ -106,8 +132,7 @@ class UserDiscriminator
             return $this->class;
         }
         
-        $session     = $this->serviceContainer->get('session');
-        $storedClass = $session->get(static::SESSION_NAME, null);
+        $storedClass = $this->session->get(static::SESSION_NAME, null);
 
         if ($storedClass) {
             $this->class = $storedClass;
@@ -141,10 +166,8 @@ class UserDiscriminator
     public function getRegistrationForm()
     {                   
         if (is_null($this->registrationForm)) {
-            $formFactory            = $this->serviceContainer->get('form.factory');
-            $type                   = $this->getRegistrationFormType($this->getClass());
-
-            $this->registrationForm = $formFactory->createNamed($type->getName(), $type, null, $this->registrationFormOptions[$this->getClass()]);
+            $type = $this->getRegistrationFormType($this->getClass());
+            $this->registrationForm = $this->formFactory->createNamed($type->getName(), $type, null, $this->registrationFormOptions[$this->getClass()]);
         }
 
         return $this->registrationForm;
@@ -157,10 +180,8 @@ class UserDiscriminator
     public function getProfileForm()
     {                       
         if (is_null($this->profileForm)) {
-            $formFactory        = $this->serviceContainer->get('form.factory');
-            $type               = $this->getProfileFormType($this->getClass());
-            
-            $this->profileForm  = $formFactory->createNamed($type->getName(), $type, null, $this->profileFormOptions[$this->getClass()]);
+            $type = $this->getProfileFormType($this->getClass());            
+            $this->profileForm  = $this->formFactory->createNamed($type->getName(), $type, null, $this->profileFormOptions[$this->getClass()]);
         }
                 
         return $this->profileForm;
@@ -243,7 +264,7 @@ class UserDiscriminator
             array_walk($parameter, function($val, $key) use(&$parameter){
                 
                 if ($key == 'factory' && empty($val)) {
-                    $parameter[$key] = 'PUGX\MultiUserBundle\Manager\UserFactory';
+                    $parameter[$key] = 'PUGX\MultiUserBundle\Model\UserFactory';
                 }
                 if (is_string($val) && !empty($val)) {
                     if (!class_exists($val)) {

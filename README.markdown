@@ -4,7 +4,11 @@ PUGXMultiUserBundle
 The PUGXMultiUserBundle extends FOSUserBundle adding the feature to handle users of different types.
 For now only supports the ORM db driver and is based on the doctrine2 inheritance.
 
-This branch (master) supports FOSUserBundle 1.3 and Symfony 2.1
+This branch (master) supports FOSUserBundle 1.3 and Symfony 2.1, but was heavily modified to decouple the controllers.
+
+For the old implementation see:
+
+The branch (1.3) supports FOSUserBundle 1.3 and Symfony 2.1
 
 The branch (1.2) supports FOSUserBundle 1.2 and Symfony 2.0
 
