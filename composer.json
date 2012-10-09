@@ -2,8 +2,8 @@
     "name": "pugx/multi-user-bundle",
     "type": "symfony-bundle",
     "description": "Symfony PUGXMultiUserBundle",
-    "keywords": ["user management, multi user management"],
-    "homepage": "netmeans.net",
+    "keywords": ["user management multi user management"],
+    "homepage": "https://github.com/PUGX",
     "license": "MIT",
     "authors": [
         {
@@ -12,7 +12,7 @@
         },
         {
             "name": "Community",
-            "homepage": "https://github.com/netmeansnet/PUGXMultiUserBundle/contributors"
+            "homepage": "https://github.com/PUGX/PUGXMultiUserBundle/contributors"
         }
     ],
     "minimum-stability": "dev",
