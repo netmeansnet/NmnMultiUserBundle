@@ -6,9 +6,9 @@ For now only supports the ORM db driver and is based on the doctrine2 inheritanc
 
 This branch (master) supports FOSUserBundle master and Symfony master, with new approach: decoupled controllers.
 
-For the old implementation see:
-
 The branch (1.4) supports FOSUserBundle 1.3 and Symfony 2.1 with new approach
+
+For the old implementation see:
 
 The branch (1.3) supports FOSUserBundle 1.3 and Symfony 2.1
 
