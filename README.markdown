@@ -14,19 +14,18 @@ The branch (1.3) supports FOSUserBundle 1.3 and Symfony 2.1
 
 The branch (1.2) supports FOSUserBundle 1.2 and Symfony 2.0
 
-The branch 1.1 was not imported; you can find it here https://github.com/netmeansnet/NmnMultiUserBundle/tree/1.1
 
-[![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=master)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
+[![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=1.3)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
 
 Documentation
 -------------
 
-[Read the Documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/master/Resources/doc/index.md)
+[Read the Documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/1.3/Resources/doc/index.md)
 
 Installation
 ------------
 
-All the installation instructions are located in [documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/master/Resources/doc/index.md).
+All the installation instructions are located in [documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/1.3/Resources/doc/index.md).
 
 License
 -------

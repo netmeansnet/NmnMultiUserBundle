@@ -36,7 +36,7 @@ Add the following lines in your composer.json:
 ```
 {
     "require": {
-        "pugx/multi-user-bundle": "dev-master"
+        "pugx/multi-user-bundle": "1.3.x-dev"
     }
 }
 
