@@ -9,7 +9,9 @@ It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 This bundle has been realized as a part of a real application that uses doctrine orm,
 so for now it only supports the ORM db driver.
 
-!!! IMPORTANT: This version was heavily modified to decouple the controllers. !!!
+!!! IMPORTANT !!!
+=================
+This version was heavily modified to decouple the controllers. !!!
 
 ## Prerequisites
 
