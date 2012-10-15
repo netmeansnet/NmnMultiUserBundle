@@ -25,7 +25,7 @@ Documentation
 Installation
 ------------
 
-All the installation instructions are located in [documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/1.3/Resources/doc/index.md).
+All the installation instructions are located in [documentation](https://github.com/PUGX/PUGXMultiUserBundle/blob/master/Resources/doc/index.md).
 
 License
 -------
