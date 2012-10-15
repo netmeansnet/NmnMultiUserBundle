@@ -38,7 +38,7 @@ Add the following lines in your composer.json:
 ```
 {
     "require": {
-        "pugx/multi-user-bundle": "1.3.x-dev"
+        "pugx/multi-user-bundle": "master-dev"
     }
 }
 
@@ -72,7 +72,7 @@ public function registerBundles()
 
 Create entities using Doctrine2 inheritance.
 
-Abstract User that directly extends from FOS\UserBundle\Entity\User
+Abstract User that directly extends FOS\UserBundle\Entity\User
 
 ``` php
 <?php
@@ -221,10 +221,6 @@ parameters:
 ```
 
 ### 6. Create your controllers
-
-PUGX\MultiUserBundle\Controller\RegistrationController can handle registration flow only for
-the first user passed to discriminator, in this case user_one.
-To handle flow of user_two you must configure a route and add a controller in your bundle.
 
 Route configuration
 
