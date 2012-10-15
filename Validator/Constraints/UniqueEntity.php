@@ -11,6 +11,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as BaseConstraint
  */
 class UniqueEntity extends BaseConstraint
 {
-    public $service = 'acme.orm.validator.unique';
+    public $service = 'pugx.orm.validator.unique';
     public $targetClass = null;
 }
