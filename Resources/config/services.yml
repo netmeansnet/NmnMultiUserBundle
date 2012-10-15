@@ -45,6 +45,12 @@ services:
       arguments: ["@service_container"]
       tags:
             - { name: kernel.event_listener, event: pugx_multi_user.change_container_value, method: set }
+            
+    pugx_multi_user.orm.validator.unique:
+        class: PUGX\MultiUserBundle\Validator\Constraints\UniqueEntityValidator
+        tags:
+            - { name: validator.constraint_validator, alias: pugx.orm.validator.unique }
+        arguments: [ "@doctrine" ]
                 
     # alias
     pugx_user_registration_form_handler:
