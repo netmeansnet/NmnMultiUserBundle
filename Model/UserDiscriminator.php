@@ -182,7 +182,7 @@ class UserDiscriminator
     public function getRegistrationForm()
     {
         if (is_null($this->registrationForm)) {
-            $type = $this->getRegistrationFormType($this->getClass());
+            $type = $this->getRegistrationFormType();
             $this->registrationForm = $this->formFactory->createNamed($type->getName(), $type, null, $this->registrationFormOptions[$this->getClass()]);
         }
 
@@ -196,7 +196,7 @@ class UserDiscriminator
     public function getProfileForm()
     {
         if (is_null($this->profileForm)) {
-            $type = $this->getProfileFormType($this->getClass());            
+            $type = $this->getProfileFormType();            
             $this->profileForm  = $this->formFactory->createNamed($type->getName(), $type, null, $this->profileFormOptions[$this->getClass()]);
         }
                 
@@ -207,10 +207,16 @@ class UserDiscriminator
      *
      * @return \Symfony\Component\Form\FormTypeInterface
      */
-    protected function getRegistrationFormType($class)
+    protected function getRegistrationFormType()
     {
-        $className = $this->registrationFormTypes[$class];   
-        $type      = new $className($class);
+        $class = $this->getClass();
+        $className = $this->registrationFormTypes[$class];
+        
+        if (!class_exists($className)) {
+            throw new \InvalidArgumentException(sprintf('UserDiscriminator, error getting registration form type : "%s" not found', $className));
+        }
+
+        $type = new $className($class);
                         
         return $type;
     }
@@ -219,10 +225,16 @@ class UserDiscriminator
      *
      * @return \Symfony\Component\Form\FormTypeInterface
      */
-    protected function getProfileFormType($class)
+    protected function getProfileFormType()
     {
-        $className = $this->profileFormTypes[$class];        
-        $type      = new $className($class);
+        $class = $this->getClass();
+        $className = $this->profileFormTypes[$class];   
+        
+        if (!class_exists($className)) {
+            throw new \InvalidArgumentException(sprintf('UserDiscriminator, error getting profile form type : "%s" not found', $className));
+        }
+        
+        $type = new $className($class);
         
         return $type;
     }
