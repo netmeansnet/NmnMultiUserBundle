@@ -29,15 +29,17 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                 'factory' => 'PUGX\MultiUserBundle\Model\UserFactory'
             ),
             'registration' => array(
-                'form' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm',
-                'options' => array(
+                'form' => array(
+                    'type' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm',
+                    'name' => 'fos_user_registration_form',
                     'validation_groups' => array('Registration', 'Default')
                 ),
                 'template' => 'AcmeUserBundle:Registration:user_one.form.html.twig'
             ),
             'profile' => array(
-                'form' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm',
-                'options' => array(
+                'form' => array(
+                    'type' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm',
+                    'name' => 'fos_user_profile_form',
                     'validation_groups' => array('Profile', 'Default')
                 )
             )
@@ -49,15 +51,17 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                 'factory' => 'PUGX\MultiUserBundle\Tests\Stub\CustomUserFactory'
             ),
             'registration' => array(
-                'form' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserRegistrationForm',
-                'options' => array(
+                'form' => array(
+                    'type' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserRegistrationForm',
+                    'name' => 'fos_user_registration_form',
                     'validation_groups' => array('Registration', 'Default')
                 ),
                 'template' => 'AcmeUserBundle:Registration:user_two.form.html.twig'
             ),
             'profile' => array(
-                'form' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm',
-                'options' => array(
+                'form' => array(
+                    'type' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm',
+                    'name' => 'fos_user_profile_form',
                     'validation_groups' => array('Profile', 'Default')
                 )
             )

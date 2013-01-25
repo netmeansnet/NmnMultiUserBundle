@@ -175,7 +175,7 @@ fos_user:
         user_manager: pugx_user_manager
 ```
 
-Acme\UserBundle\Entity\User should be an abstract class, because you don't have to use it.
+Acme\UserBundle\Entity\User must be an abstract class, because you don't have to use it.
 In fact is the discriminator that has responsibility to get the user class depending on context.
 
 ### 5. Configure the PUGXMultiUserBundle
@@ -188,28 +188,28 @@ pugx_multi_user:
     user_one:
         entity: 
           class: Acme\UserBundle\Entity\UserOne
+#          factory: 
         registration:
-          form: Acme\UserBundle\Form\Type\RegistrationUserOneFormType
-          options:
-            validation_groups: [Registration, Default]
+          form: 
+            type: Acme\UserBundle\Form\Type\RegistrationUserOneFormType
+            name: fos_user_registration_form
+            validation_groups:  [Registration, Default]
           template: AcmeUserBundle:Registration:user_one.form.html.twig
         profile:
-          form: Acme\UserBundle\Form\Type\ProfileUserOneFormType
-          options:
-            validation_groups: [Profile, Default]
+          form:
+            type: Acme\UserBundle\Form\Type\ProfileUserOneFormType
+            name: fos_user_profile_form
+            validation_groups:  [Profile, Default] 
     user_two:
         entity: 
           class: Acme\UserBundle\Entity\UserTwo
-#          factory: ~
         registration:
-          form: Acme\UserBundle\Form\Type\RegistrationUserTwoFormType
-          options:
-            validation_groups: [Registration, Default]
+          form: 
+            type: Acme\UserBundle\Form\Type\RegistrationUserTwoFormType
           template: AcmeUserBundle:Registration:user_two.form.html.twig
         profile:
-          form: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
-          options:
-            validation_groups: [Profile, Default]
+          form: 
+            type: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
 ```
 
 
@@ -272,3 +272,6 @@ class RegistrationUserTwo extends BaseController
     }
 }
 ```
+
+For now only registration and profile form factories are wrapped; 
+if you need creat a custom FormType you have to inject the discriminator.
