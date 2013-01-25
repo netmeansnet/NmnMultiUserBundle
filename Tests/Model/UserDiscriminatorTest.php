@@ -22,22 +22,48 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
         $this->user = new User();  
         $this->userInvalid = $this->getMockBuilder('InvalidUser')->disableOriginalConstructor()->getMock();  
         $this->userFactory = $this->getMockBuilder('PUGX\MultiUserBundle\Model\UserFactoryInterface')->disableOriginalConstructor()->getMock();
-        
+                
         $userParameters = array(
-            'entity' => 'PUGX\MultiUserBundle\Tests\Stub\User',
-            'registration' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm',
-            'profile' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm',
-            'factory' => ''
+            'entity' => array(
+                'class' => 'PUGX\MultiUserBundle\Tests\Stub\User',
+                'factory' => 'PUGX\MultiUserBundle\Model\UserFactory'
+            ),
+            'registration' => array(
+                'form' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm',
+                'options' => array(
+                    'validation_groups' => array('Registration', 'Default')
+                ),
+                'template' => 'AcmeUserBundle:Registration:user_one.form.html.twig'
+            ),
+            'profile' => array(
+                'form' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm',
+                'options' => array(
+                    'validation_groups' => array('Profile', 'Default')
+                )
+            )
         );
 
         $anotherUserParameters = array(
-            'entity' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser',
-            'registration' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserRegistrationForm',
-            'profile' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm',
-            'factory' => 'PUGX\MultiUserBundle\Tests\Stub\CustomUserFactory'
+            'entity' => array(
+                'class' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser',
+                'factory' => 'PUGX\MultiUserBundle\Tests\Stub\CustomUserFactory'
+            ),
+            'registration' => array(
+                'form' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserRegistrationForm',
+                'options' => array(
+                    'validation_groups' => array('Registration', 'Default')
+                ),
+                'template' => 'AcmeUserBundle:Registration:user_two.form.html.twig'
+            ),
+            'profile' => array(
+                'form' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm',
+                'options' => array(
+                    'validation_groups' => array('Profile', 'Default')
+                )
+            )
         );
         
-        $this->parameters = array('classes' => array('user' => $userParameters, 'anotherUser' => $anotherUserParameters));
+        $this->parameters = array('user_one' => $userParameters, 'user_two' => $anotherUserParameters);
         
         $this->discriminator = new UserDiscriminator($this->session, $this->formFactory, $this->parameters);
     }
@@ -50,16 +76,21 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
         $registrationFormTypes  = $reflectionClass->getProperty('registrationFormTypes');
         $profileFormTypes       = $reflectionClass->getProperty('profileFormTypes');
         $userFactories          = $reflectionClass->getProperty('userFactories');
+        $registrationTemplates  = $reflectionClass->getProperty('registrationTemplates');
         
         $entities->setAccessible(true);
         $registrationFormTypes->setAccessible(true);
         $profileFormTypes->setAccessible(true);
         $userFactories->setAccessible(true);
+        $registrationTemplates->setAccessible(true);
         
         $entitiesExpected           = array('PUGX\MultiUserBundle\Tests\Stub\User', 'PUGX\MultiUserBundle\Tests\Stub\AnotherUser');
         
         $registrationFormsExpected  = array('PUGX\MultiUserBundle\Tests\Stub\User' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm', 
                                             'PUGX\MultiUserBundle\Tests\Stub\AnotherUser' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserRegistrationForm');
+        
+        $registrationTemplatesExpected  = array('PUGX\MultiUserBundle\Tests\Stub\User' => 'AcmeUserBundle:Registration:user_one.form.html.twig', 
+                                            'PUGX\MultiUserBundle\Tests\Stub\AnotherUser' => 'AcmeUserBundle:Registration:user_two.form.html.twig');
         
         $profileFormsExpected       = array('PUGX\MultiUserBundle\Tests\Stub\User' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm', 
                                             'PUGX\MultiUserBundle\Tests\Stub\AnotherUser' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm');
@@ -71,20 +102,34 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($registrationFormsExpected, $registrationFormTypes->getValue($this->discriminator));
         $this->assertEquals($profileFormsExpected, $profileFormTypes->getValue($this->discriminator));
         $this->assertEquals($userFactoriesExpected, $userFactories->getValue($this->discriminator));
+        $this->assertEquals($registrationTemplatesExpected, $registrationTemplates->getValue($this->discriminator));
     }
     
     /**
      * @expectedException \LogicException
      */
     public function testBuildException()
-    {
+    {        
         $userParameters = array(
-            'entity' => 'FakeUser',
-            'registration' => 'UserRegistrationForm',
-            'profile' => 'UserProfileForm',
-            'factory' => 'UserFactory'
+            'entity' => array(
+                'class' => 'FakeUser',
+                'factory' => 'PUGX\MultiUserBundle\Model\UserFactory'
+            ),
+            'registration' => array(
+                'form' => 'PUGX\MultiUserBundle\Tests\Stub\UserRegistrationForm',
+                'options' => array(
+                    'validation_groups' => array('Registration', 'Default')
+                )
+            ),
+            'profile' => array(
+                'form' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm',
+                'options' => array(
+                    'validation_groups' => array('Profile', 'Default')
+                )
+            )
         );
-        $parameters     = array('classes' => array('user' => $userParameters));
+        
+        $parameters     = array('user' => $userParameters);
         $discriminator  = new UserDiscriminator($this->session, $this->formFactory, $parameters);
     }
     
@@ -146,7 +191,7 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                 ->with('form_name', $type, null, array('validation_groups' => array('Registration', 'Default')))
                 ->will($this->onConsecutiveCalls(null));
         
-        $this->discriminator->getRegistrationForm();
+        $this->discriminator->getForm('registration');
     }
     
     public function testGetAnotherRegistrationForm()
@@ -158,7 +203,7 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                 ->will($this->onConsecutiveCalls(null));
         
         $this->discriminator->setClass('PUGX\MultiUserBundle\Tests\Stub\AnotherUser');
-        $this->discriminator->getRegistrationForm();
+        $this->discriminator->getForm('registration');
     }
     
     public function testGetDefaultProfileForm()
@@ -169,7 +214,7 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                 ->with('form_name', $type, null, array('validation_groups' => array('Profile', 'Default')))
                 ->will($this->onConsecutiveCalls(null));
         
-        $this->discriminator->getProfileForm();
+        $this->discriminator->getForm('profile');
     }
     
     public function testGetAnotherProfileForm()
@@ -181,7 +226,7 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                 ->will($this->onConsecutiveCalls(null));
         
         $this->discriminator->setClass('PUGX\MultiUserBundle\Tests\Stub\AnotherUser');
-        $this->discriminator->getProfileForm();
+        $this->discriminator->getForm('profile');
     }
 }
     

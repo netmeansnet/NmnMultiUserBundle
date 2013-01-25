@@ -11,7 +11,8 @@ so for now it only supports the ORM db driver.
 
 !!! IMPORTANT !!!
 =================
-This version was heavily modified to decouple the controllers. !!!
+This version was heavily modified because now FOSUserBundle uses events
+and so many classes introduced in previous refactoring are unnecessary
 
 ## Prerequisites
 
@@ -165,64 +166,52 @@ but it does it only in controllers and forms handlers; in the other cases (comma
 it still uses the user_class configured in the config.
 
 ``` yaml
-# Acme/app/Resources/config/config.yml
+# Acme/UserBundle/Resources/config/config.yml
 fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Acme\UserBundle\Entity\User
     service:
         user_manager: pugx_user_manager
-    registration:
-        form:
-            handler: pugx_user_registration_form_handler
-    profile:
-        form:
-            handler: pugx_user_profile_form_handler
 ```
 
-### 5. Configure parameters for UserDiscriminator
+Acme\UserBundle\Entity\User should be an abstract class, because you don't have to use it.
+In fact is the discriminator that has responsibility to get the user class depending on context.
+
+### 5. Configure the PUGXMultiUserBundle
 
 ``` yaml
 # Acme/UserBundle/Resources/config/config.yml
 
-parameters:
-  pugx_user_discriminator_parameters:
-    classes:
-        user_one:
-            entity: Acme\UserBundle\Entity\UserOne
-            registration: Acme\UserBundle\Form\Type\RegistrationUserOneFormType
-            profile: Acme\UserBundle\Form\Type\ProfileUserOneFormType
-            factory:
-        user_two:
-            entity: Acme\UserBundle\Entity\UserTwo
-            registration: Acme\UserBundle\Form\Type\RegistrationUserTwoFormType
-            profile: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
-            factory:
+pugx_multi_user:
+  users:
+    user_one:
+        entity: 
+          class: Acme\UserBundle\Entity\UserOne
+        registration:
+          form: Acme\UserBundle\Form\Type\RegistrationUserOneFormType
+          options:
+            validation_groups: [Registration, Default]
+          template: AcmeUserBundle:Registration:user_one.form.html.twig
+        profile:
+          form: Acme\UserBundle\Form\Type\ProfileUserOneFormType
+          options:
+            validation_groups: [Profile, Default]
+    user_two:
+        entity: 
+          class: Acme\UserBundle\Entity\UserTwo
+#          factory: ~
+        registration:
+          form: Acme\UserBundle\Form\Type\RegistrationUserTwoFormType
+          options:
+            validation_groups: [Registration, Default]
+          template: AcmeUserBundle:Registration:user_two.form.html.twig
+        profile:
+          form: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
+          options:
+            validation_groups: [Profile, Default]
 ```
 
-If you need to pass custom options to the form (like a validation groups)
-
-``` yaml
-# Acme/UserBundle/Resources/config/config.yml
-
-parameters:
-  pugx_user_discriminator_parameters:
-    classes:
-        user_one:
-            entity: Acme\UserBundle\Entity\UserOne
-            registration: Acme\UserBundle\Form\Type\RegistrationUserOneFormType
-            registration_options: 
-                validation_groups: [Registration, Default]
-            profile: Acme\UserBundle\Form\Type\ProfileUserOneFormType
-            profile_options: 
-                validation_groups: [Profile, Default]
-            factory:
-        user_two:
-            entity: Acme\UserBundle\Entity\UserTwo
-            registration: Acme\UserBundle\Form\Type\RegistrationUserTwoFormType
-            profile: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
-            factory:
-```
 
 ### 6. Create your controllers
 
@@ -257,19 +246,9 @@ class RegistrationUserOne extends BaseController
 {
     public function registerAction()
     {
-        $handler = $this->container->get('pugx_multi_user.controller.handler');
-        $discriminator = $this->container->get('pugx_user_discriminator');
-
-        $return = $handler->registration('Acme\UserBundle\Entity\UserOne');
-        $form = $discriminator->getRegistrationForm();
-
-        if ($return instanceof RedirectResponse) {
-            return $return;
-        }
-
-        return $this->container->get('templating')->renderResponse('AcmeUserBundle:Registration:user_one.form.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->container
+                    ->get('pugx_multi_user.registration_manager')
+                    ->register('Acme\UserBundle\Entity\UserOne');
     }
 }
 ```
@@ -287,19 +266,9 @@ class RegistrationUserTwo extends BaseController
 {
     public function registerAction()
     {
-        $handler = $this->container->get('pugx_multi_user.controller.handler');
-        $discriminator = $this->container->get('pugx_user_discriminator');
-
-        $return = $handler->registration('Acme\UserBundle\Entity\UserTwo');
-        $form = $discriminator->getRegistrationForm();
-
-        if ($return instanceof RedirectResponse) {
-            return $return;
-        }
-
-        return $this->container->get('templating')->renderResponse('AcmeUserBundle:Registration:user_two.form.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->container
+                    ->get('pugx_multi_user.registration_manager')
+                    ->register('Acme\UserBundle\Entity\UserTwo');
     }
 }
 ```

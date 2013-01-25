@@ -18,22 +18,66 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pugx_user');
+        $rootNode = $treeBuilder->root('pugx_multi_user');
 
         $supportedDrivers = array('orm');
         
-        $rootNode
-            ->children()
+        $rootNode->
+            children()
                 ->scalarNode('db_driver')
                     ->defaultValue('orm')
                     ->validate()
                         ->ifNotInArray($supportedDrivers)
                         ->thenInvalid('The driver %s is not supported. Please choose one of '.json_encode($supportedDrivers))
                     ->end()
+                ->end();
+        
+        $rootNode->
+                children()
+                    ->arrayNode('users')->prototype('array')
+                        ->children()
+                            ->arrayNode('entity')
+                                ->children()
+                                    ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('factory')->defaultValue('PUGX\MultiUserBundle\Model\UserFactory')->end()
+                                ->end()              
+                            ->end()
+                        ->end()
+                        ->children()
+                            ->arrayNode('registration')
+                                ->children()
+                                    ->scalarNode('form')->isRequired()->cannotBeEmpty()->end()
+                                    ->arrayNode('options')
+                                        ->children()
+                                            ->arrayNode('validation_groups')
+                                                ->prototype('scalar')->end()
+                                                ->defaultValue(array('Registration', 'Default'))
+                                            ->end()
+                                        ->end()
+                                    ->end()
+                                    ->scalarNode('template')->defaultValue(null)->end()
+                                 ->end()
+                            ->end()
+                        ->end()
+                        ->children()
+                            ->arrayNode('profile')
+                                ->children()
+                                    ->scalarNode('form')->isRequired()->cannotBeEmpty()->end()
+                                    ->arrayNode('options')
+                                        ->children()
+                                            ->arrayNode('validation_groups')
+                                                ->prototype('scalar')->end()
+                                                ->defaultValue(array('Profile', 'Default'))
+                                            ->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
-            ->end()
-        ;
-
+                ->end();
+        
         return $treeBuilder;
     }
 }

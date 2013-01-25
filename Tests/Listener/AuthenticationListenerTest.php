@@ -2,10 +2,10 @@
 
 namespace PUGX\MultiUserBundle\Tests\Controller;
 
-use PUGX\MultiUserBundle\Listener\SecurityListener;
+use PUGX\MultiUserBundle\Listener\AuthenticationListener;
 use PUGX\MultiUserBundle\Tests\Stub\User;
 
-class SecurityListenerTest extends \PHPUnit_Framework_TestCase
+class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -13,13 +13,13 @@ class SecurityListenerTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()->getMock();    
         $this->interactiveLoginEvent = $this->getMockBuilder('Symfony\Component\Security\Http\Event\InteractiveLoginEvent')
                 ->disableOriginalConstructor()->getMock();  
-        $this->manualLoginEvent = $this->getMockBuilder('PUGX\MultiUserBundle\Event\ManualLoginEvent')
+        $this->implicitLoginEvent = $this->getMockBuilder('FOS\UserBundle\Event\UserEvent')
                 ->disableOriginalConstructor()->getMock();                  
         $this->token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
                 ->disableOriginalConstructor()->getMock();       
         $this->user = new User();  
         
-        $this->listener = new SecurityListener($this->userDiscriminator);
+        $this->listener = new AuthenticationListener($this->userDiscriminator);
     }
     
     public function testOnSecurityInteractiveLogin()
@@ -31,11 +31,11 @@ class SecurityListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->onSecurityInteractiveLogin($this->interactiveLoginEvent);       
     }
     
-    public function testOnSecurityManualLogin()
+    public function testOnSecurityImplicitLogin()
     {
-        $this->manualLoginEvent->expects($this->once())->method('getUser')->will($this->returnValue($this->user));        
+        $this->implicitLoginEvent->expects($this->once())->method('getUser')->will($this->returnValue($this->user));        
         $this->userDiscriminator->expects($this->exactly(1))->method('setClass')->with('PUGX\MultiUserBundle\Tests\Stub\User', true);
         
-        $this->listener->onSecurityManualLogin($this->manualLoginEvent);         
+        $this->listener->onSecurityImplicitLogin($this->implicitLoginEvent);         
     }
 }
