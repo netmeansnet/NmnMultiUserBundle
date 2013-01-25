@@ -3,8 +3,6 @@
 namespace PUGX\MultiUserBundle\Model;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use FOS\UserBundle\Model\UserInterface;
 
 /**
  * Description of UserDiscriminator
@@ -24,33 +22,9 @@ class UserDiscriminator
     
     /**
      *
-     * @var FormFactoryInterface 
-     */
-    protected $formFactory;
-    
-    /**
-     *
      * @var array 
      */
-    protected $entities = array();
-    
-    /**
-     *
-     * @var array 
-     */
-    protected $registrationFormTypes = array();  
-    
-    /**
-     *
-     * @var array 
-     */
-    protected $profileFormTypes = array();  
-    
-    /**
-     *
-     * @var array 
-     */
-    protected $userFactories = array();
+    protected $conf = array();
     
     /**
      *
@@ -66,39 +40,24 @@ class UserDiscriminator
     
     /**
      *
-     * @var array 
-     */
-    protected $registrationTemplates = array();
-    
-    /**
-     *
      * @var string 
      */
     protected $class = null;
     
     /**
-     *
-     * @var array 
+     * Current form
+     * @var type 
      */
-    protected $registrationValidationGroups = array();
-    
-    /**
-     *
-     * @var array 
-     */
-    protected $profileValidationGroups = array();
+    protected $form = null;
 
     /**
      *
      * @param SessionInterface $session
-     * @param FormFactoryInterface $formFactory
      * @param array $parameters 
      */
-    public function __construct(SessionInterface $session, FormFactoryInterface $formFactory, array $parameters)
+    public function __construct(SessionInterface $session, array $parameters)
     {
-        $this->session = $session;
-        $this->formFactory = $formFactory;
-        
+        $this->session = $session;        
         $this->buildConfig($parameters);
     }
     
@@ -108,7 +67,12 @@ class UserDiscriminator
      */
     public function getClasses()
     {        
-        return $this->entities;
+        $classes = array();
+        foreach ($this->conf as $entity => $conf) {
+            $classes[] = $entity;
+        }
+        
+        return $classes;
     }
         
     /**
@@ -117,7 +81,7 @@ class UserDiscriminator
      */
     public function setClass($class, $persist = false)
     {
-        if (!in_array($class, $this->entities)) {
+        if (!in_array($class, $this->getClasses())) {
             throw new \LogicException(sprintf('Impossible to set the class discriminator, because the class "%s" is not present in the entities list', $class));
         }
         
@@ -145,7 +109,8 @@ class UserDiscriminator
         }
         
         if (is_null($this->class)) {
-            $this->class = $this->entities[0];
+            $entities = $this->getClasses();
+            $this->class = $entities[0];
         }
         
         return $this->class;
@@ -156,35 +121,32 @@ class UserDiscriminator
      * @return type 
      */
     public function createUser()
-    {        
-        $class   = $this->getClass();
-        $factory = $this->userFactories[$class];
-        $user    = $factory::build($class);
+    {
+        $factory = $this->getUserFactory();
+        $user    = $factory::build($this->getClass());
         
         return $user;
     }
     
     /**
      * 
-     * @param string $type
-     * @return \Symfony\Component\Form\Form
+     * @return string
      */
-    public function getForm($type)
+    public function getUserFactory()
     {
-        $method = 'get' . ucfirst($type) . 'Form';
-        return $this->$method();
+        return $this->conf[$this->getClass()]['factory'];
     }
     
     /**
      * 
-     * @param array $types
-     * @return string
+     * @param string $name
+     * @return 
      * @throws \InvalidArgumentException
      */
-    protected function getFormType($types)
+    public function getFormType($name)
     {
         $class = $this->getClass();
-        $className = $types[$class];
+        $className = $this->conf[$class][$name]['form']['type'];
         
         if (!class_exists($className)) {
             throw new \InvalidArgumentException(sprintf('UserDiscriminator, error getting form type : "%s" not found', $className));
@@ -197,59 +159,33 @@ class UserDiscriminator
     
     /**
      * 
-     * @param type $form
-     * @param type $types
-     * @param type $validationGroups
-     * @return type
+     * @param string $name
+     * @return string
      */
-    protected function buildForm($types, $validationGroups)
+    public function getFormName($name)
     {
-        $type = $this->getFormType($types);
-            
-        $form = $this->formFactory->createNamed(
-                $type->getName(), 
-                $type, 
-                null, 
-                array('validation_groups' => $validationGroups[$this->getClass()]));
-        
-        return $form;
-    }
-
-    /**
-     *
-     * @return \Symfony\Component\Form\Form 
-     */
-    public function getRegistrationForm()
-    {        
-        if (is_null($this->registrationForm)) {
-            $this->registrationForm = $this->buildForm($this->registrationFormTypes, $this->registrationValidationGroups);
-        }
-        
-        return $this->registrationForm;
-    }
-    
-    /**
-     *
-     * @return \Symfony\Component\Form\Form 
-     */
-    public function getProfileForm()
-    {
-        if (is_null($this->profileForm)) {
-            $this->profileForm = $this->buildForm($this->profileFormTypes, $this->profileValidationGroups);
-        }
-        
-        return $this->profileForm;
+        return $this->conf[$this->getClass()][$name]['form']['name'];
     }
     
     /**
      * 
-     * @return string
+     * @param type $name
+     * @return type
      */
-    public function getRegistrationTemplate()
+    public function getFormValidationGroups($name)
     {
-        return $this->registrationTemplates[$this->getClass()]; 
+        return $this->conf[$this->getClass()][$name]['form']['validation_groups'];
     }
 
+    /**
+     * 
+     * @return string
+     */
+    public function getTemplate($name)
+    {
+        return $this->conf[$this->getClass()][$name]['template'];
+    }
+    
     /**
      *
      * @param array $entities
@@ -266,13 +202,24 @@ class UserDiscriminator
                 throw new \InvalidArgumentException(sprintf('UserDiscriminator, configuration error : "%s" not found', $class));
             }
             
-            $this->entities[] = $class;
-            $this->registrationFormTypes[$class] = $user['registration']['form']['type'];
-            $this->registrationValidationGroups[$class] = $user['registration']['form']['validation_groups'];
-            $this->registrationTemplates[$class] = $user['registration']['template'];
-            $this->profileFormTypes[$class] = $user['profile']['form']['type'];
-            $this->profileValidationGroups[$class] = $user['profile']['form']['validation_groups'];
-            $this->userFactories[$class] = $user['entity']['factory'];
+            $this->conf[$class] = array(
+                    'factory' => $user['entity']['factory'],
+                    'registration' => array(
+                        'form' => array(
+                            'type' => $user['registration']['form']['type'],
+                            'name' => $user['registration']['form']['name'],
+                            'validation_groups' => $user['registration']['form']['validation_groups'],
+                        ),                        
+                        'template' => $user['registration']['template'],
+                    ),
+                    'profile' => array(
+                        'form' => array(
+                            'type' => $user['profile']['form']['type'],
+                            'name' => $user['profile']['form']['name'],
+                            'validation_groups' => $user['profile']['form']['validation_groups'],
+                        )
+                    )
+                );
         }
     }
 }

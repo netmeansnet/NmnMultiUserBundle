@@ -3,6 +3,7 @@
 namespace PUGX\MultiUserBundle\Form;
 
 use PUGX\MultiUserBundle\Model\UserDiscriminator;
+use Symfony\Component\Form\FormFactoryInterface;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
 
 class FormFactory implements FactoryInterface
@@ -15,18 +16,31 @@ class FormFactory implements FactoryInterface
     
     /**
      *
+     * @var FormFactoryInterface 
+     */
+    private $formFactory;
+    
+    /**
+     *
      * @var string 
      */
     private $type;
+    
+    /**
+     *
+     * @var array 
+     */
+    private $forms = array();
     
     /**
      * 
      * @param \PUGX\MultiUserBundle\Model\UserDiscriminator $userDiscriminator
      * @param string $type registration|profile
      */
-    public function __construct(UserDiscriminator $userDiscriminator, $type) 
+    public function __construct(UserDiscriminator $userDiscriminator, FormFactoryInterface $formFactory, $type) 
     {
         $this->userDiscriminator = $userDiscriminator;
+        $this->formFactory = $formFactory;
         $this->type = $type;
     }
     
@@ -36,6 +50,22 @@ class FormFactory implements FactoryInterface
      */
     public function createForm()
     {
-        return $this->userDiscriminator->getForm($this->type);
+        $type = $this->userDiscriminator->getFormType($this->type);
+        $name = $this->userDiscriminator->getFormName($this->type);
+        $validationGroups = $this->userDiscriminator->getFormValidationGroups($this->type);
+        
+        if (array_key_exists($name, $this->forms)) {
+            return $this->forms[$name];
+        }
+            
+        $form = $this->formFactory->createNamed(
+                $name, 
+                $type, 
+                null, 
+                array('validation_groups' => $validationGroups));
+        
+        $this->forms[$name] = $form;
+        
+        return $form;
     }
 }
