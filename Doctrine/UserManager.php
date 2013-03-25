@@ -97,19 +97,19 @@ class UserManager extends BaseUserManager
     public function findUsers()
     {
         $classes = $this->userDiscriminator->getClasses();
-        
-        $users = array();
+
+        $usersAll = array();
         foreach ($classes as $class) {
             $repo = $this->om->getRepository($class);
-                        
+
             $users = $repo->findAll();
-            
+
             if ($users) {
-                $users = array_merge($users, $users);
-            }               
+                $usersAll = array_merge($usersAll, $users); // $usersAll
+            }
         }
-        
-        return $users;
+
+        return $usersAll;
     }
 
 

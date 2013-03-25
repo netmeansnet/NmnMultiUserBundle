@@ -17,6 +17,9 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         $this->controller = $this->getMockBuilder('FOS\UserBundle\Controller\RegistrationController')
                 ->disableOriginalConstructor()->getMock();
         
+        $this->formFactory = $this->getMockBuilder('PUGX\MultiUserBundle\Form\FormFactory')
+                ->disableOriginalConstructor()->getMock();
+        
         $this->request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
                 ->disableOriginalConstructor()->getMock();
         
@@ -32,7 +35,7 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         $this->formView = $this->getMockBuilder('Symfony\Component\Form\FormView')
                 ->disableOriginalConstructor()->getMock();
         
-        $this->userManager = new RegistrationManager($this->discriminator, $this->container, $this->controller);
+        $this->userManager = new RegistrationManager($this->discriminator, $this->container, $this->controller, $this->formFactory);
     }
     
     public function common()
@@ -82,7 +85,8 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         
         $this->discriminator
                 ->expects($this->exactly(1))
-                ->method('getRegistrationTemplate')
+                ->method('getTemplate')
+                ->with('registration')
                 ->will($this->returnValue(null));
         
         $this->container
@@ -91,9 +95,9 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
                 ->with('fos_user.template.engine')
                 ->will($this->returnValue('twig'));
         
-        $this->discriminator
+        $this->formFactory
                 ->expects($this->exactly(1))
-                ->method('getRegistrationForm')
+                ->method('createForm')
                 ->will($this->returnValue($this->form));
         
         $this->container
@@ -127,12 +131,13 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         
         $this->discriminator
                 ->expects($this->exactly(1))
-                ->method('getRegistrationTemplate')
+                ->method('getTemplate')
+                ->with('registration')
                 ->will($this->returnValue('PUGXMultiUserBundle:Registration:register.html.twig'));
         
-        $this->discriminator
+        $this->formFactory
                 ->expects($this->exactly(1))
-                ->method('getRegistrationForm')
+                ->method('createForm')
                 ->will($this->returnValue($this->form));
         
         $this->container
