@@ -281,17 +281,17 @@ if you need creat a custom FormType you have to inject the discriminator.
 Creating a new User using User Manager:
 
 ``` php
-        $discriminator = $this->container->get('pugx_user.manager.user_discriminator');
-        $discriminator->setClass('Acme\UserBundle\Entity\UserOne');
+    $discriminator = $this->container->get('pugx_user.manager.user_discriminator');
+    $discriminator->setClass('Acme\UserBundle\Entity\UserOne');
 
-        $userManager = $this->container->get('pugx_user_manager');
+    $userManager = $this->container->get('pugx_user_manager');
 
-        $userOne = $userManager->createUser();
+    $userOne = $userManager->createUser();
 
-        $userOne->setUsername('admin');
-        $userOne->setEmail('admin@mail.com');
-        $userOne->setPlainPassword('123456');
-        $userOne->setEnabled(true);
+    $userOne->setUsername('admin');
+    $userOne->setEmail('admin@mail.com');
+    $userOne->setPlainPassword('123456');
+    $userOne->setEnabled(true);
 
-        $userManager->updateUser($userOne, true);
+    $userManager->updateUser($userOne, true);
 ```
