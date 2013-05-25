@@ -39,7 +39,7 @@ Add the following lines in your composer.json:
 ```
 {
     "require": {
-	"friendsofsymfony/user-bundle": "2.0.*@dev",
+		"friendsofsymfony/user-bundle": "2.0.*@dev",
         "pugx/multi-user-bundle": "2.0.*@dev"
     }
 }
