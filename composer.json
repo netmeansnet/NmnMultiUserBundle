@@ -17,8 +17,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "friendsofsymfony/user-bundle": "2.0.*@dev",
-        "symfony/form": ">=2.1,<2.3-dev"
+        "friendsofsymfony/user-bundle": "2.0.x-dev"
     },
     "suggest": {
     },
