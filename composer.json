@@ -17,7 +17,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "friendsofsymfony/user-bundle": "dev-master",
+        "friendsofsymfony/user-bundle": "2.0.*@dev",
         "symfony/form": ">=2.1,<2.3-dev"
     },
     "suggest": {
@@ -25,5 +25,10 @@
     "autoload": {
         "psr-0": { "PUGX\\MultiUserBundle": "" }
     },
-    "target-dir": "PUGX/MultiUserBundle"
+    "target-dir": "PUGX/MultiUserBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
 }
