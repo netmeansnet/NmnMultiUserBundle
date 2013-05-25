@@ -52,10 +52,25 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     }
     
     public function testFindUserBy()
-    {                
-        $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('PUGX\MultiUserBundle\Tests\Stub\User')));
-        $this->om->expects($this->exactly(1))->method('getRepository')->will($this->returnValue($this->repo));
-        $this->repo->expects($this->exactly(1))->method('findOneBy')->with(array('criteria' => 'dummy'))->will($this->onConsecutiveCalls(true));
+    {
+        $this->userDiscriminator
+            ->expects($this->exactly(1))
+            ->method('getClasses')
+            ->will($this->onConsecutiveCalls(array('PUGX\MultiUserBundle\Tests\Stub\User')));
+
+        $this->om->expects($this->exactly(1))
+            ->method('getRepository')
+            ->will($this->returnValue($this->repo));
+
+        $this->repo->expects($this->exactly(1))
+            ->method('findOneBy')
+            ->with(array('criteria' => 'dummy'))->will($this->onConsecutiveCalls(true));
+
+        $this->userDiscriminator
+            ->expects($this->exactly(1))
+            ->method('setClass')
+            ->will($this->onConsecutiveCalls(array('PUGX\MultiUserBundle\Tests\Stub\User')));
+
         $this->userManager->findUserBy(array('criteria' => 'dummy'));
     }
     
@@ -63,7 +78,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     {                
         $this->userDiscriminator->expects($this->exactly(1))->method('getClasses')->will($this->onConsecutiveCalls(array('PUGX\MultiUserBundle\Tests\Stub\User')));
         $this->om->expects($this->exactly(1))->method('getRepository')->with('PUGX\MultiUserBundle\Tests\Stub\User')->will($this->returnValue($this->repo));
-        $this->repo->expects($this->exactly(1))->method('findAll')->will($this->onConsecutiveCalls(array()));                
+        $this->repo->expects($this->exactly(1))->method('findAll')->will($this->onConsecutiveCalls(array()));
         $this->userManager->findUsers();
     }
     
@@ -75,19 +90,5 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->userDiscriminator->expects($this->exactly(0))->method('setClass');                
         $user = $this->userManager->findUserBy(array('criteria' => 'dummy'));        
         $this->assertEquals(null, $user);
-    }
-
-    public function testRefreshUserDiscriminatorClasses()
-    {
-        $user = $this->getMock('FOS\UserBundle\Model\User');
-        $class = get_class($user);
-        $this->userDiscriminator->expects($this->any())->method('getClass')->will($this->onConsecutiveCalls($this->class, $class));
-        $this->userDiscriminator->expects($this->any())->method('getClasses')->will($this->returnValue(array($this->class, $class)));
-        $this->userDiscriminator->expects($this->exactly(1))->method('setClass')->with($class);
-
-        $this->om->expects($this->any())->method('getRepository')->will($this->returnValue($this->repo));
-        $this->repo->expects($this->any())->method('findOneBy')->will($this->returnValue($user));
-
-        $this->assertSame($user, $this->userManager->refreshUser($user));
     }
 }
