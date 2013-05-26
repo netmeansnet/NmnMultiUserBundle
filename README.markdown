@@ -18,6 +18,7 @@ The branch (1.3) supports FOSUserBundle 1.3 and Symfony 2.1
 The branch (1.2) supports FOSUserBundle 1.2 and Symfony 2.0
 [![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=1.2)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
 
+Total Downloads [![Total Downloads](http://poser.pagodabox.com/pugx/multi-user-bundle/d/total.png)](https://packagist.org/packages/pugx/multi-user-bundle)
 
 
 Documentation
