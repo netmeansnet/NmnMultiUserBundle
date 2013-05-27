@@ -7,6 +7,9 @@ For now only supports the ORM db driver and is based on the doctrine2 inheritanc
 This branch (master) supports FOSUserBundle master and Symfony master.
 [![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=master)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
 
+The branch (2.0) supports FOSUserBundle 2.0 and Symfony 2.1.
+[![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=2.0)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
+
 The branch (1.4) supports FOSUserBundle 1.3 and Symfony 2.1 with new approach
 [![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=1.4)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
 
