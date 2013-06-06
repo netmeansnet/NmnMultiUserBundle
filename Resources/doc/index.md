@@ -9,11 +9,6 @@ It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 This bundle has been realized as a part of a real application that uses doctrine orm,
 so for now it only supports the ORM db driver.
 
-!!! IMPORTANT !!!
-=================
-This version was heavily modified because now FOSUserBundle uses events
-and so many classes introduced in previous refactoring are unnecessary
-
 ## Prerequisites
 
 This version of the bundle requires Symfony dev-master and FOSUserBundle dev-master
