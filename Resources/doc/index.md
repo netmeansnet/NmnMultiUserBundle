@@ -168,7 +168,7 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Acme\UserBundle\Entity\User
-    service:
+      service:
         user_manager: pugx_user_manager
 ```
 
@@ -213,7 +213,7 @@ pugx_multi_user:
 
 ### 6. Create your controllers
 
-Route configuration
+#### Route configuration
 
 ``` yaml
 # Acme/UserBundle/Resources/config/routing.yml
@@ -228,21 +228,20 @@ user_two_registration:
 ```
 
 **Note:**
-> You have to disable the default route registration coming from FOSUser and create your own template or you have to manage it for prevent incorrect registration 
+> You have to disable the default route registration coming from FOSUser or you have to manage it for prevent incorrect registration 
 
+#### Controllers
 
-Controllers
-
-RegistrationUserOne
+RegistrationUserOneController
 
 ``` php
 <?php
 
 namespace Acme\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class RegistrationUserOne extends BaseController
+class RegistrationUserOneController extends Controller
 {
     public function registerAction()
     {
@@ -253,16 +252,16 @@ class RegistrationUserOne extends BaseController
 }
 ```
 
-RegistrationUserTwo
+RegistrationUserTwoController
 
 ``` php
 <?php
 
 namespace Acme\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class RegistrationUserTwo extends BaseController
+class RegistrationUserTwoController extends Controller
 {
     public function registerAction()
     {
@@ -277,6 +276,25 @@ class RegistrationUserTwo extends BaseController
 **Note:**
 
 > Remember to create the templates for registration form with correct routes
+
+something like this, if you are extending fosub
+
+```
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+    {% trans_default_domain 'FOSUserBundle' %}
+
+    <form action="{{ path('user_one_registration') }}" {{ form_enctype(form) }} method="POST">
+        {{ form_widget(form) }}
+        <div>
+            <input type="submit" value="{{ 'registration.submit'|trans }}" />
+        </div>
+    </form>
+{% endblock fos_user_content %}
+```
+
+**Note:**
 
 > For now only registration and profile form factories are wrapped; 
 if you need creat a custom FormType you have to inject the discriminator.
