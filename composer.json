@@ -17,6 +17,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
+        "doctrine/doctrine-bundle": "*",
         "friendsofsymfony/user-bundle": "2.0.x-dev"
     },
     "suggest": {
