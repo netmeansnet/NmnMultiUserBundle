@@ -9,11 +9,6 @@ It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 This bundle has been realized as a part of a real application that uses doctrine orm,
 so for now it only supports the ORM db driver.
 
-!!! IMPORTANT !!!
-=================
-This version was heavily modified because now FOSUserBundle uses events
-and so many classes introduced in previous refactoring are unnecessary
-
 ## Prerequisites
 
 This version of the bundle requires Symfony dev-master and FOSUserBundle dev-master
@@ -28,6 +23,7 @@ This version of the bundle requires Symfony dev-master and FOSUserBundle dev-mas
 4. Configure the FOSUserBundle (PUGXMultiUserBundle params)
 5. Configure parameters for UserDiscriminator
 6. Create your controllers
+7. Using the User Manager
 
 
 ### 1. Download PUGXMultiUserBundle
@@ -176,7 +172,8 @@ fos_user:
         user_manager: pugx_user_manager
 ```
 
-Acme\UserBundle\Entity\User must be an abstract class, because you don't have to use it.
+**Note:**
+> Acme\UserBundle\Entity\User must be an abstract class, because you don't have to use it.
 In fact is the discriminator that has responsibility to get the user class depending on context.
 
 ### 5. Configure the PUGXMultiUserBundle
@@ -216,7 +213,7 @@ pugx_multi_user:
 
 ### 6. Create your controllers
 
-Route configuration
+#### Route configuration
 
 ``` yaml
 # Acme/UserBundle/Resources/config/routing.yml
@@ -230,20 +227,21 @@ user_two_registration:
     defaults: { _controller: AcmeUserBundle:RegistrationUserTwo:register }
 ```
 
-You can disable the default route registration coming from FOSUser or you have to manage it for prevent incorrect registration
+**Note:**
+> You have to disable the default route registration coming from FOSUser or you have to manage it for prevent incorrect registration 
 
-Controller
+#### Controllers
 
-RegistrationUserOne
+RegistrationUserOneController
 
 ``` php
 <?php
 
 namespace Acme\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class RegistrationUserOne extends BaseController
+class RegistrationUserOneController extends Controller
 {
     public function registerAction()
     {
@@ -254,16 +252,16 @@ class RegistrationUserOne extends BaseController
 }
 ```
 
-RegistrationUserTwo
+RegistrationUserTwoController
 
 ``` php
 <?php
 
 namespace Acme\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class RegistrationUserTwo extends BaseController
+class RegistrationUserTwoController extends Controller
 {
     public function registerAction()
     {
@@ -274,10 +272,34 @@ class RegistrationUserTwo extends BaseController
 }
 ```
 
-For now only registration and profile form factories are wrapped; 
+
+**Note:**
+
+> Remember to create the templates for registration form with correct routes
+
+something like this, if you are extending fosub
+
+```
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+    {% trans_default_domain 'FOSUserBundle' %}
+
+    <form action="{{ path('user_one_registration') }}" {{ form_enctype(form) }} method="POST">
+        {{ form_widget(form) }}
+        <div>
+            <input type="submit" value="{{ 'registration.submit'|trans }}" />
+        </div>
+    </form>
+{% endblock fos_user_content %}
+```
+
+**Note:**
+
+> For now only registration and profile form factories are wrapped; 
 if you need creat a custom FormType you have to inject the discriminator.
 
-### Using the User Manager
+### 7. Using the User Manager
 
 Creating a new UserOne:
 

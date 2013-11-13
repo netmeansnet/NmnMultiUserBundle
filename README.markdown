@@ -4,6 +4,10 @@ PUGXMultiUserBundle
 The PUGXMultiUserBundle extends FOSUserBundle adding the feature to handle users of different types.
 For now only supports the ORM db driver and is based on the doctrine2 inheritance.
 
+[![Downloads](https://poser.pugx.org/pugx/multi-user-bundle/d/total.png)](https://packagist.org/packages/pugx/multi-user-bundle)
+[![Latest Stable Version](https://poser.pugx.org/pugx/multi-user-bundle/version.png)](https://packagist.org/packages/pugx/multi-user-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/pugx/multi-user-bundle/v/unstable.png)](https://packagist.org/packages/pugx/multi-user-bundle)
+
 This branch (master) supports FOSUserBundle master and Symfony master.
 [![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=master)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
 
@@ -20,8 +24,6 @@ The branch (1.3) supports FOSUserBundle 1.3 and Symfony 2.1
 
 The branch (1.2) supports FOSUserBundle 1.2 and Symfony 2.0
 [![Build Status](https://secure.travis-ci.org/PUGX/PUGXMultiUserBundle.png?branch=1.2)](http://travis-ci.org/PUGX/PUGXMultiUserBundle)
-
-Total Downloads [![Total Downloads](http://poser.pagodabox.com/pugx/multi-user-bundle/d/total.png)](https://packagist.org/packages/pugx/multi-user-bundle)
 
 
 Documentation
