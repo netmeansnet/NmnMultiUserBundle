@@ -18,8 +18,7 @@
     "require": {
         "doctrine/doctrine-bundle": "1.2.*",
         "doctrine/common": "~2.2",
-        "friendsofsymfony/user-bundle": "2.0.x-dev@dev",
-        "symfony/validator": "2.4.*"
+        "friendsofsymfony/user-bundle": "2.0.x-dev@dev"
     },
     "suggest": {
     },
