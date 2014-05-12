@@ -155,7 +155,7 @@ class UserTwo extends User
 ```
 
 You must also create forms for your entities:
-see [Overriding Default FOSUserBundle Forms] (https://github.com/josevillalobos/FOSUserBundle/blob/master/Resources/doc/overriding_forms.md)
+see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/overriding_forms.md)
 
 ### 4. Configure the FOSUserBundle (PUGXMultiUserBundle params)
 
