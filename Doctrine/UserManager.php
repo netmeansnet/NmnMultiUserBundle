@@ -3,6 +3,7 @@
 namespace PUGX\MultiUserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\ORMException;
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -15,16 +16,16 @@ use PUGX\MultiUserBundle\Model\UserDiscriminator;
  * @author eux (eugenio@netmeans.net)
  */
 class UserManager extends BaseUserManager
-{ 
+{
     /**
      *
-     * @var ObjectManager 
+     * @var ObjectManager
      */
     protected $om;
-        
+
     /**
      *
-     * @var UserDiscriminator 
+     * @var UserDiscriminator
      */
     protected $userDiscriminator;
 
@@ -42,10 +43,10 @@ class UserManager extends BaseUserManager
     {
         $this->om = $om;
         $this->userDiscriminator = $userDiscriminator;
-        
+
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
     }
-    
+
     /**
      *
      * {@inheritDoc}
@@ -69,23 +70,28 @@ class UserManager extends BaseUserManager
     public function findUserBy(array $criteria)
     {
         $classes = $this->userDiscriminator->getClasses();
-                
+
         foreach ($classes as $class) {
 
             $repo = $this->om->getRepository($class);
-            
+
             if (!$repo) {
                 throw new \LogicException(sprintf('Repository "%s" not found', $class));
             }
-                        
-            $user = $repo->findOneBy($criteria);
-            
+
+            // Some models does not have the property associated to the criteria
+            try {
+                $user = $repo->findOneBy($criteria);
+            } catch (ORMException $e) {
+                $user = null;
+            }
+
             if ($user) {
                 $this->userDiscriminator->setClass($class);
                 return $user;
             }
         }
-        
+
         return null;
     }
 
@@ -117,14 +123,14 @@ class UserManager extends BaseUserManager
     protected function findConflictualUsers($value, array $fields)
     {
         $classes = $this->userDiscriminator->getClasses();
-                
+
         foreach ($classes as $class) {
 
             $repo = $this->om->getRepository($class);
-                        
+
             $users = $repo->findBy($this->getCriteria($value, $fields));
-            
-            if (count($users) > 0) {                
+
+            if (count($users) > 0) {
                 return $users;
             }
         }
