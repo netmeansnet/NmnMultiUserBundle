@@ -38,6 +38,8 @@ class RegistrationManager
      * 
      * @param \PUGX\MultiUserBundle\Model\UserDiscriminator $userDiscriminator
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \FOS\UserBundle\Controller\RegistrationController $controller
+     * @param \PUGX\MultiUserBundle\Form\FormFactory $formFactory
      */
     public function __construct(UserDiscriminator $userDiscriminator,
                                 ContainerInterface $container, 
