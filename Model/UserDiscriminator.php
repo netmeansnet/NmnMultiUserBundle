@@ -188,9 +188,8 @@ class UserDiscriminator
     
     /**
      *
-     * @param array $entities
-     * @param array $registrationForms
-     * @param array $profileForms 
+     * @param array $users
+     * @throws \InvalidArgumentException
      */
     protected function buildConfig(array $users)
     {
