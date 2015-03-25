@@ -217,7 +217,8 @@ class UserDiscriminator
                             'type' => $user['profile']['form']['type'],
                             'name' => $user['profile']['form']['name'],
                             'validation_groups' => $user['profile']['form']['validation_groups'],
-                        )
+                        ),
+                        'template' => $user['profile']['template'],
                     )
                 );
         }

@@ -41,7 +41,8 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                     'type' => 'PUGX\MultiUserBundle\Tests\Stub\UserProfileForm',
                     'name' => 'fos_user_profile_form',
                     'validation_groups' => array('Profile', 'Default')
-                )
+                ),
+                'template' => 'AcmeUserBundle:Profile:user_two.form.html.twig'
             )
         );
 
@@ -63,7 +64,8 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                     'type' => 'PUGX\MultiUserBundle\Tests\Stub\AnotherUserProfileForm',
                     'name' => 'fos_user_profile_form',
                     'validation_groups' => array('Profile', 'Default')
-                )
+                ),
+                'template' => 'AcmeUserBundle:Profile:user_two.form.html.twig'
             )
         );
         
@@ -213,4 +215,3 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('AcmeUserBundle:Registration:user_one.form.html.twig', $result);
     }
 }
-    

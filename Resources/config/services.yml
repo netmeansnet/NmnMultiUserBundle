@@ -10,10 +10,17 @@ services:
         class: PUGX\MultiUserBundle\Controller\RegistrationManager
         arguments: ["@pugx_user.manager.user_discriminator", "@service_container", "@pugx_multi_user.registration_controller", "@fos_user.registration.form.factory"]
         
+    pugx_multi_user.profile_manager:
+        class: PUGX\MultiUserBundle\Controller\ProfileManager
+        arguments: ["@pugx_user.manager.user_discriminator", "@service_container", "@pugx_multi_user.profile_controller", "@fos_user.profile.form.factory"]
+
     #simply wrap
     pugx_multi_user.registration_controller:
       class: FOS\UserBundle\Controller\RegistrationController
       
+    pugx_multi_user.profile_controller:
+      class: FOS\UserBundle\Controller\ProfileController
+
     #form factories
     pugx_multi_user.registration_form_factory:
       class: PUGX\MultiUserBundle\Form\FormFactory
@@ -40,5 +47,4 @@ services:
     # alias
     pugx_user_discriminator:
         alias: pugx_user.manager.user_discriminator
-    
     
