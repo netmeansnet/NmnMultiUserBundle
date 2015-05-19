@@ -69,8 +69,7 @@ class RegistrationManager
         
         $template = $this->userDiscriminator->getTemplate('registration');
         if (is_null($template)) {
-            $engine = $this->container->getParameter('fos_user.template.engine');
-            $template = 'FOSUserBundle:Registration:register.html.'.$engine;
+            $template = 'FOSUserBundle:Registration:register.html.twig';
         }
         
         $form = $this->formFactory->createForm();      
