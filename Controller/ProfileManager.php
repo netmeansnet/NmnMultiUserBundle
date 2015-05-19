@@ -63,8 +63,7 @@ class ProfileManager
 
         $template = $this->userDiscriminator->getTemplate('profile');
         if (is_null($template)) {
-            $engine = $this->container->getParameter('fos_user.template.engine');
-            $template = 'FOSUserBundle:Registration:edit.html.'.$engine;
+            $template = 'FOSUserBundle:Profile:edit.html.twig';
         }
 
         $form = $this->formFactory->createForm();

@@ -89,12 +89,6 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
                 ->with('registration')
                 ->will($this->returnValue(null));
         
-        $this->container
-                ->expects($this->at(1))
-                ->method('getParameter')
-                ->with('fos_user.template.engine')
-                ->will($this->returnValue('twig'));
-        
         $this->formFactory
                 ->expects($this->exactly(1))
                 ->method('createForm')
