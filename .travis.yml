@@ -8,7 +8,7 @@ before_install:
   - composer selfupdate
 
 install: 
-  - composer update
+  - composer update --verbose
     
 script:
   - phpunit
