@@ -7,10 +7,10 @@ php:
 sudo: false  
   
 before_install:
-  - curl -sS https://getcomposer.org/installer | php
+  - composer selfupdate
 
 install: 
-  - php composer.phar update --verbose
+  - composer update
     
 script:
   - phpunit
