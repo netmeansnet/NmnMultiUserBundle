@@ -4,9 +4,14 @@ php:
   - 5.3
   - 5.4
   
-before_script:
-    - composer selfupdate
-    - composer update --prefer-dist --no-interaction
+before_install:
+  - composer selfupdate
+
+install: 
+  - composer update
+    
+script:
+  - phpunit
 
 notifications:
   email:
