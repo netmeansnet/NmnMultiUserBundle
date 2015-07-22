@@ -4,6 +4,8 @@ php:
   - 5.3
   - 5.4
   
+sudo: false  
+  
 before_install:
   - curl -sS https://getcomposer.org/installer | php
 
