@@ -9,7 +9,7 @@ before_install:
   - php composer.phar selfupdate
 
 install: 
-  - php composer.phar --verbose
+  - php composer.phar update --verbose
     
 script:
   - phpunit
