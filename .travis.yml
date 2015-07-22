@@ -6,7 +6,7 @@ php:
   
 before_script:
     - composer selfupdate
-    - composer install --prefer-dist
+    - composer update --prefer-dist --no-interaction
 
 notifications:
   email:
