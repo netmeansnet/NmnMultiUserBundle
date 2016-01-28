@@ -18,7 +18,10 @@
     "require": {
         "doctrine/doctrine-bundle": "~1.2",
         "doctrine/common": "~2.2",
-        "friendsofsymfony/user-bundle": "2.0.x-dev@dev"
+        "friendsofsymfony/user-bundle": "2.0.*@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*"
     },
     "suggest": {
     },
