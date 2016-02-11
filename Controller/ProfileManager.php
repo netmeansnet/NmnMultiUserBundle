@@ -56,9 +56,9 @@ class ProfileManager
         $this->userDiscriminator->setClass($class);
 
         $this->controller->setContainer($this->container);
-        $result = $this->controller->editAction($this->container->get('request'));
+        $result = $this->controller->editAction($this->getRequest());
         if ($result instanceof RedirectResponse) {
-            return $this->controller->redirect($this->controller->get('request')->getRequestUri());
+            return $this->controller->redirect($this->getRequest()->getRequestUri());
         }
 
         $template = $this->userDiscriminator->getTemplate('profile');
@@ -70,5 +70,13 @@ class ProfileManager
         return $this->container->get('templating')->renderResponse($template, array(
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Request;
+     */
+    private function getRequest()
+    {
+        return $this->container->get('request_stack')->getCurrentRequest();
     }
 }
