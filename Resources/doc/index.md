@@ -220,11 +220,11 @@ pugx_multi_user:
 # Acme/UserBundle/Resources/config/routing.yml
 
 user_one_registration:
-    pattern:  /register/user-one
+    path:  /register/user-one
     defaults: { _controller: AcmeUserBundle:RegistrationUserOne:register }
 
 user_two_registration:
-    pattern:  /register/user-two
+    path:  /register/user-two
     defaults: { _controller: AcmeUserBundle:RegistrationUserTwo:register }
 ```
 
