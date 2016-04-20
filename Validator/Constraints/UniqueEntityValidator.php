@@ -112,6 +112,15 @@ class UniqueEntityValidator extends BaseValidator
         }
 
         $errorPath = null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
-        $this->context->addViolationAt($errorPath, $constraint->message, array(), $criteria[$fields[0]]);
+
+        if (\Symfony\Component\HttpKernel\Kernel::MAJOR_VERSION >= 3) {
+            $this->context->buildViolation($constraint->message)
+                ->atPath($errorPath)
+                ->setInvalidValue($criteria[$fields[0]])
+                ->addViolation();
+        } else {
+            $this->context->addViolationAt($errorPath, $constraint->message, array(), $criteria[$fields[0]]);
+        }
+
     }
 }
