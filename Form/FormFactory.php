@@ -8,34 +8,22 @@ use FOS\UserBundle\Form\Factory\FactoryInterface;
 
 class FormFactory implements FactoryInterface
 {
-    /**
-     *
-     * @var \PUGX\MultiUserBundle\Model\UserDiscriminator 
-     */
+    /** @var \PUGX\MultiUserBundle\Model\UserDiscriminator */
     private $userDiscriminator;
     
-    /**
-     *
-     * @var FormFactoryInterface 
-     */
+    /**  @var FormFactoryInterface */
     private $formFactory;
     
-    /**
-     *
-     * @var string 
-     */
+    /** @var string */
     private $type;
     
-    /**
-     *
-     * @var array 
-     */
+    /** @var array  */
     private $forms = array();
-    
+
     /**
-     * 
-     * @param \PUGX\MultiUserBundle\Model\UserDiscriminator $userDiscriminator
-     * @param string $type registration|profile
+     * @param UserDiscriminator    $userDiscriminator
+     * @param FormFactoryInterface $formFactory
+     * @param string               $type              registration|profile
      */
     public function __construct(UserDiscriminator $userDiscriminator, FormFactoryInterface $formFactory, $type) 
     {
@@ -45,7 +33,6 @@ class FormFactory implements FactoryInterface
     }
     
     /**
-     * 
      * @return \Symfony\Component\Form\Form 
      */
     public function createForm()
@@ -57,12 +44,23 @@ class FormFactory implements FactoryInterface
         if (array_key_exists($name, $this->forms)) {
             return $this->forms[$name];
         }
-            
-        $form = $this->formFactory->createNamed(
-                $name, 
-                $type, 
-                null, 
-                array('validation_groups' => $validationGroups));
+
+        if (\Symfony\Component\HttpKernel\Kernel::MAJOR_VERSION >= 3) {
+            $form = $this->formFactory->createNamed(
+                $name,
+                get_class($type),
+                null,
+                array('validation_groups' => $validationGroups)
+            );
+        } else {
+            // Legacy support
+            $form = $this->formFactory->createNamed(
+                $name,
+                $type,
+                null,
+                array('validation_groups' => $validationGroups)
+            );
+        }
         
         $this->forms[$name] = $form;
         

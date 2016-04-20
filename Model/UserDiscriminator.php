@@ -169,8 +169,8 @@ class UserDiscriminator
     
     /**
      * 
-     * @param type $name
-     * @return type
+     * @param string $name
+     * @return string
      */
     public function getFormValidationGroups($name)
     {
