@@ -8,12 +8,11 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->encoderFactory = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\EncoderFactory')
-                ->disableOriginalConstructor()->getMock();
-        $this->usernameCanonicalizer = $this->getMockBuilder('FOS\UserBundle\Util\Canonicalizer')
-                ->disableOriginalConstructor()->getMock();
-        $this->emailCanonicalizer = $this->getMockBuilder('FOS\UserBundle\Util\Canonicalizer')
-                ->disableOriginalConstructor()->getMock();
+        $this->passwordUpdater = $this->getMockBuilder('FOS\UserBundle\Util\PasswordUpdaterInterface')->getMock();
+        $this->fieldsUpdater = $this->getMockBuilder('FOS\UserBundle\Util\CanonicalFieldsUpdater')
+            ->disableOriginalConstructor()->getMock();
+        
+        
         $this->om = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
                 ->disableOriginalConstructor()->getMock();
         $this->userDiscriminator = $this->getMockBuilder('PUGX\MultiUserBundle\Model\UserDiscriminator')
@@ -35,7 +34,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($this->class));
         //end parent
         
-        $this->userManager = new UserManager($this->encoderFactory, $this->usernameCanonicalizer, $this->emailCanonicalizer, $this->om, $this->class, $this->userDiscriminator);
+        $this->userManager = new UserManager($this->passwordUpdater, $this->fieldsUpdater, $this->om, $this->class, $this->userDiscriminator);
     }
         
     public function testGetClass()
