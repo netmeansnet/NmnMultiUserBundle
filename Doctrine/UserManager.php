@@ -32,9 +32,8 @@ class UserManager extends BaseUserManager
     /**
      * Constructor.
      *
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param CanonicalizerInterface  $usernameCanonicalizer
-     * @param CanonicalizerInterface  $emailCanonicalizer
+     * @param PasswordUpdaterInterface $passwordUpdater
+     * @param CanonicalFieldsUpdater  $canonicalFieldsUpdater
      * @param ObjectManager           $om
      * @param string                  $class
      * @param UserDiscriminator       $userDiscriminator
